@@ -28,7 +28,11 @@ gulp.task('scripts', function () {
     .pipe(buffer())
     .pipe(uglify())
     .pipe(gulp.dest('./'))
-    .pipe(browserSync.stream());
+    .pipe(browserSync.stream())
+    .pipe(notify({
+        "title": "JS",
+        "subtitle": "Finished"
+      }));
 
 });
 

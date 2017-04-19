@@ -14,19 +14,42 @@ body {
 }
 
 a {
-  color: $main-color;
+  color: $background-color;
   text-decoration: none;
   &:visited {
-    color: $main-color;
+    color: $background-color;
   }
   &:hover {
-    color: $main-color;
+    color: $background-color;
   }
   &:active {
-    color: $main-color;
+    color: $background-color;
   }
 }
 
 p {
-  font-family: $display-stack;
+  font-family: $sans-serif-stack;
+  color: rgb(0, 78, 67);
+}
+
+ul {
+  display: flex;
+  font-family: $sans-serif-stack;
+  color: rgb(230, 230, 230);
+  flex-direction: row;
+  align-content: center;
+  align-items: center;
+  text-align: center;
+  justify-content: space-between;
+  width: 100%;
+  border: 1px solid white;
+  height: 100%;
+  li {
+    width: 100%;
+    letter-spacing: 1px;
+  }
+}
+
+h1 {
+  color: rgb(0, 78, 67);
 }

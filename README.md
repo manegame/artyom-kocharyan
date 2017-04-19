@@ -1,1 +1,5 @@
-# Manegame Static Site Boilerplate
+# Artyom Kocharyan
+
+aka Burial Artyomovich
+
+- http://whiti.es/
