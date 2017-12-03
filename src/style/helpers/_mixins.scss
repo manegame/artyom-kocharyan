@@ -1,7 +1,58 @@
+/// Mixin to place items on a circle
+/// @author Hugo Giraudel
+/// @author Ana Tudor
+/// @param {Integer} $item-count - Number of items on the circle
+/// @param {Length} $circle-size - Large circle size
+/// @param {Length} $item-size - Single item size
+@mixin on-circle($item-count, $circle-size, $item-size, $initial-rot) {
+  position: relative;
+  width:  $circle-size;
+  height: $circle-size;
+  padding: 0;
+  border-radius: 50%;
+  list-style: none;
+
+  > * {
+    display: block;
+    position: absolute;
+    top:  50%;
+    left: 50%;
+    width:  $item-size;
+    height: auto;
+    margin-top: -($item-size / 2);
+    margin-left: -($item-size / 2);
+
+    $angle: (360 / $item-count);
+    $rot: 0;
+
+    @for $i from 1 through $item-count {
+      &:nth-of-type(#{$i}) {
+        transform:
+          rotate($rot * 1deg)
+          translate($circle-size / 2)
+          rotate($rot * -1deg);
+        -webkit-transform:
+          rotate($rot * 1deg)
+          translate($circle-size / 2)
+          rotate($rot * -1deg);
+      }
+
+      $rot: $rot + $angle;
+    }
+    transition: all 0.15s ease-out;
+  }
+}
+
+@mixin no-select {
+  -webkit-user-select: none;  /* Chrome all / Safari all */
+     -moz-user-select: none;  /* Firefox all */
+      -ms-user-select: none;  /* IE 10+ */
+          user-select: none;  /* Likely future */
+}
+
 /// Helper to clear inner floats
 /// @author Nicolas Gallagher
 /// @link http://nicolasgallagher.com/micro-clearfix-hack/ Micro Clearfix
-
 @mixin clearfix {
   &::after {
     clear: both;
@@ -9,79 +60,56 @@
     display: table;
   }
 }
-
-
 ///
 /// Helper to handle overflowing text
 /// Values of text-overflow are: clip, ellipsis, or a string
 ///
-
 @mixin truncate-text($overflow: ellipsis) {
   overflow: hidden;
   text-overflow: $overflow; //
   white-space: nowrap;
 }
-
-
 ///
 /// Helper to set height and width
 ///
-
 @mixin size($width, $height: $width) {
   height: $height;
   width: $width;
 }
-
-
 ///
 /// Helper to center element vertically and horizontally in parent
 ///
-
 @mixin center {
   left: 50%;
   position: absolute;
   top: 50%;
   transform: translateX(-50%) translateY(-50%);
 }
-
 ///
 /// Helper to center element vertically in parent
 ///
-
 @mixin center-vertical {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
 }
-
-
 ///
 /// Helper to center element horizontally in parent
 ///
-
 @mixin center-horizontal {
   left: 50%;
   position: absolute;
   transform: translateX(-50%);
 }
-
 @mixin hide-scroll {
   &::-webkit-scrollbar {
     display: none;
   }
   -ms-overflow-style: none;
 }
-
-@mixin skew($degree) {
-  display: inline-block;
-  transform: skewX($degree);
-  -webkit-transform: skewX($degree);
-}
-
 ///
 /// Credit: thoughtbot - http://robots.thoughtbot.com/sasss-content-directive
 ///
-
 /* USAGE
 .block {
   color: red;
@@ -93,13 +121,11 @@
   }
 }
 */
-
 @mixin element( $name ) {
   @at-root #{&}__#{$name} {
     @content;
   }
 }
-
 @mixin modifier( $name ) {
   @at-root #{&}--#{$name} {
     @content;
