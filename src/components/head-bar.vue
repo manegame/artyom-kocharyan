@@ -1,6 +1,6 @@
 <template>
   <div class="head-bar">
-    Head bar
+    <router-link :to="{ name: 'main' }">Artyom Kocharyan</router-link>
   </div>
 </template>
 
@@ -12,6 +12,6 @@ export default {
 
 <style>
 .head-bar {
-  font-family: 'sans-serif'
+  z-index: 1000;
 }
 </style>

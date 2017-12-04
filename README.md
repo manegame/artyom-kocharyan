@@ -2,6 +2,8 @@
 
 aka Burial Artyomovich
 
+### Latest Version is deployed [here](http://artyom-kocharyan.netlify.com/)
+
 ### Circular layout
 
 http://wary-attempt.surge.sh/
