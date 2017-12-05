@@ -1,15 +1,11 @@
 <template>
   <div class="compilation">
-    <p class="compilation__title" @click='rotated = !rotated'>
+    <p class="compilation__title" @click='openSlideshow'>
       Compilation 1
     </p>
     <ul class="compilation__circle" :class='{"compilation__circle--rotated": rotated}'>
       <li class="compilation__circle__item" v-for='(item, index) in main.posts' @click='openSlideshow(index)'><img class="compilation__circle__item__image" :src='item.acf.image.sizes["pwr-medium"]' alt="..." /></li>
     </ul>
-    <slideShow v-if='$route.hash.substring(1) === "images"' :images='imageArray'/>
-
-    <!-- <bacPopUpSlideshow v-if='$route.hash.substring(1) === "images"' @close='removeHash' :images='$route.params.language === "en" ? englishImageArray : arabicImageArray' :captions='$route.params.language === "en" ? englishCaptionsArray : arabicCaptionsArray' :count='count' /> -->
-
   </div>
 </template>
 
@@ -29,18 +25,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['main']),
-    imageArray() {
-      console.log('populating array')
-      let result = []
-      this.main.posts.map(post => {
-        result.push({
-          type: 'image',
-          url: post.acf.image.sizes['pwr-large']
-        })
-      })
-      return result
-    }
+    ...mapState(['main'])
   },
   mounted() {
     this.GET_POSTS()
@@ -49,11 +34,7 @@ export default {
     ...mapActions(['GET_POSTS']),
     openSlideshow(index) {
       console.log('called', index)
-      // this.count = index
-      // this.$router.push({name: this.$route.name, hash: '#images', params: {slug: this.$route.params.slug}})
-    },
-    removeHash() {
-      this.$router.push({name: 'page', hash: '', params: {slug: this.$route.params.slug}})
+      this.$router.push({name: this.$route.name, hash: '#images', params: {slug: this.$route.params.slug, count: this.count}})
     }
   }
 }

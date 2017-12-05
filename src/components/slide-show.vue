@@ -1,48 +1,23 @@
 <template>
   <div class='popup' @touchmove.stop.prevent>
-    <div class='popup__slideshow'>
 
-      <div class="popup__slideshow__nav" v-if="max > 1">
-        <a class='popup__slideshow__nav__button--previous' @click='previous'></a>
-        <a class='popup__slideshow__nav__button--next' @click='next'></a>
-      </div>
-
-      <div class="popup__slideshow__top">
-        <img class='popup__slideshow__top__image' :src='images[index].url'>
-      </div>
-
-      <div class="popup__slideshow__bottom">
-        <div class="popup__slideshow__bottom__caption">
-          <p class="popup__slideshow__bottom__caption__text">
-            <span class="popup__slideshow__bottom__caption__text--counter" v-if="max > 1">
-              <span v-html='index+1'></span>
-              /
-              <span v-html='max'></span>
-            </span>
-            <span class="popup__slideshow__bottom__caption__text--caption" v-html='captions[index]'></span>
-          </p>
-        </div>
-
-        <bacShare />
-      </div>
-
+    <div class="popup__slideshow">
+      {{index}}
+      <img class="popup__slideshow__image" :src='images[index].url'/>
+      <span class="popup__close--slideshow" @click='$emit("close")'>close</span>
     </div>
-
-    <p class="popup__close--slideshow" @click='$emit("close")'>
-      <a>close</a>
-    </p>
 
   </div>
 </template>
 
 <script>
-import reframe from 'reframe.js'
+import GIF from 'gif.js.optimized'
 
 export default {
   name: 'slide-show',
   data() {
     return {
-      index: this.count
+      index: this.$route.params.count
     }
   },
   props: {
@@ -52,7 +27,7 @@ export default {
     },
     count: {
       type: Number,
-      required: false
+      required: true
     }
   },
   methods: {
@@ -82,16 +57,25 @@ export default {
     }
   },
   created() {
-    window.addEventListener('keydown', this.navigation)
+    if (!this.$route.params.count) {
+      this.$route.params.count = 0
+    }
   },
   mounted() {
-    this.$nextTick(() => reframe('iframe'))
-  },
-  watch: {
-    index: function() {
-      console.log('Im watching u')
-      this.$nextTick(() => reframe('iframe'))
+    let gif = new GIF({
+      workers: 2,
+      quality: 10
+    })
+    for (let i = 0; i < this.images.length; i++) {
+      let img = document.createElement('img')
+      img.src = this.images[i].url
+      gif.addFrame(img)
     }
+    gif.on('finished', function(blob) {
+      console.log('gif finished!')
+      window.open(window.URL.createObjectURL(blob))
+    })
+    gif.render()
   },
   beforeDestroy() {
     window.removeEventListener('keydown', this.navigation)
@@ -103,4 +87,19 @@ export default {
 @import '../style/helpers/_mixins.scss';
 @import '../style/helpers/_responsive.scss';
 @import '../style/_variables.scss';
+
+.popup {
+  position: fixed;
+
+  &__slideshow {
+    width: 100vw;
+    height: 100vh;
+
+    &__image {
+      max-width: 90vmin;
+
+      @include center;
+    }
+  }
+}
 </style>

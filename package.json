@@ -15,6 +15,7 @@
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "contentful": "^5.0.5",
+    "gif.js.optimized": "^1.0.1",
     "prismic-javascript": "^1.4.1",
     "raven-js": "^3.20.1",
     "reframe.js": "^2.1.14",

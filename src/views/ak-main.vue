@@ -8,17 +8,41 @@
     <div class="main__headbar">
       <headBar/>
     </div>
+    <slideShow v-if='$route.hash.substring(1, 7) === "images"' @close='removeHash' :images='imageArray' :count='$route.params.count'/>
   </div>
 </template>
 
 <script>
+import {mapState} from 'vuex'
 import compilation from '../components/compilation'
 import headBar from '../components/head-bar'
+import slideShow from '../components/slide-show'
+
 export default {
   name: 'ak-main',
   components: {
     compilation,
-    headBar
+    headBar,
+    slideShow
+  },
+  computed: {
+    ...mapState(['main']),
+    imageArray() {
+      console.log('populating array')
+      let result = []
+      this.main.posts.map(post => {
+        result.push({
+          type: 'image',
+          url: post.acf.image.sizes['pwr-large']
+        })
+      })
+      return result
+    }
+  },
+  methods: {
+    removeHash() {
+      this.$router.push({name: 'main', hash: '', params: {slug: this.$route.params.slug}})
+    }
   }
 }
 </script>
