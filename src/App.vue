@@ -102,7 +102,7 @@ export default {
   font-size: $font-size;
   line-height: $line-height;
   color: $white;
-  background: tomato;
+  background: $white;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

@@ -2,12 +2,10 @@
   <div class="main">
     <div class="main__compilation">
       <compilation/>
-      <compilation/>
-      <compilation/>
     </div>
-    <div class="main__headbar">
+    <!-- <div class="main__headbar">
       <headBar/>
-    </div>
+    </div> -->
     <slideShow v-if='$route.hash.substring(1, 7) === "images"' @close='removeHash' :images='imageArray' :count='$route.params.count'/>
   </div>
 </template>
@@ -54,14 +52,14 @@ export default {
 @import '../style/_variables.scss';
 
 .main {
-  color: red;
+  color: $black;
   clear: both;
 
   &__compilation {
     position: relative;
     width: 100vmin;
     height: 100vmin;
-    background: black;
+    background: $white;
     float: left;
     overflow-y: scroll;
 

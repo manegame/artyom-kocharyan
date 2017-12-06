@@ -1,8 +1,9 @@
 <template>
   <div class="compilation">
-    <p class="compilation__title" @click='openSlideshow'>
+    <a class="compilation__title" @click='rotated = !rotated'>
       Compilation 1
-    </p>
+    </a>
+
     <ul class="compilation__circle" :class='{"compilation__circle--rotated": rotated}'>
       <li class="compilation__circle__item" v-for='(item, index) in main.posts' @click='openSlideshow(index)'><img class="compilation__circle__item__image" :src='item.acf.image.sizes["pwr-medium"]' alt="..." /></li>
     </ul>
@@ -11,16 +12,12 @@
 
 <script>
 import {mapState, mapActions} from 'vuex'
-import slideShow from '../components/slide-show'
 
 export default {
   name: 'compilation',
-  components: {
-    slideShow
-  },
   data() {
     return {
-      rotated: false,
+      rotated: true,
       count: 0
     }
   },
@@ -33,7 +30,6 @@ export default {
   methods: {
     ...mapActions(['GET_POSTS']),
     openSlideshow(index) {
-      console.log('called', index)
       this.$router.push({name: this.$route.name, hash: '#images', params: {slug: this.$route.params.slug, count: this.count}})
     }
   }
@@ -57,15 +53,16 @@ export default {
     display: block;
     font-style: italic;
     cursor: pointer;
+    color: $black;
+    z-index: 10;
 
     @include center;
     @include no-select;
   }
 
   &__circle {
-    border: solid 5px red;
-    pointer-events: none;
     margin: 0 auto;
+    z-index: 0;
 
     @include on-circle(4, 80vmin, 0, 120);
 
