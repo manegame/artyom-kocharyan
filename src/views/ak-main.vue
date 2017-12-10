@@ -1,46 +1,39 @@
 <template>
   <div class="main">
-    <div class="main__compilation">
-      <compilation/>
+    <div class="main__compilations">
+      <compilation v-for='category in main.categories' :posts='compilation(category.name)'/>
     </div>
-    <!-- <div class="main__headbar">
-      <headBar/>
-    </div> -->
-    <slideShow v-if='$route.hash.substring(1, 7) === "images"' @close='removeHash' :images='imageArray' :count='$route.params.count'/>
   </div>
 </template>
 
 <script>
-import {mapState} from 'vuex'
+import {mapState, mapActions} from 'vuex'
 import compilation from '../components/compilation'
 import headBar from '../components/head-bar'
-import slideShow from '../components/slide-show'
 
 export default {
   name: 'ak-main',
   components: {
     compilation,
-    headBar,
-    slideShow
+    headBar
   },
   computed: {
-    ...mapState(['main']),
-    imageArray() {
-      console.log('populating array')
+    ...mapState(['main'])
+  },
+  methods: {
+    ...mapActions(['GET_CATEGORIES']),
+    compilation(name) {
       let result = []
       this.main.posts.map(post => {
-        result.push({
-          type: 'image',
-          url: post.acf.image.sizes['pwr-large']
-        })
+        if (post.acf.compilation.name === name) {
+          result.push(post)
+        }
       })
       return result
     }
   },
-  methods: {
-    removeHash() {
-      this.$router.push({name: 'main', hash: '', params: {slug: this.$route.params.slug}})
-    }
+  mounted() {
+    this.GET_CATEGORIES()
   }
 }
 </script>
@@ -55,13 +48,16 @@ export default {
   color: $black;
   clear: both;
 
-  &__compilation {
+  &__compilations {
     position: relative;
-    width: 100vmin;
-    height: 100vmin;
+    width: 100vw;
+    height: auto;
     background: $white;
     float: left;
     overflow-y: scroll;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: flex-start;
 
     @include hide-scroll;
   }

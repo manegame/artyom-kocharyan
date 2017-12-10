@@ -42,7 +42,6 @@ export default {
       if (event.keyCode === 39) this.next()
       if (event.keyCode === 27) {
         this.$emit('close')
-        console.log('ja')
       }
     },
     previous() {
@@ -90,18 +89,21 @@ export default {
 
 .popup {
   position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
   z-index: 100;
+  background: rgba(255, 255, 255, 0.4);
 
   &__slideshow {
     width: 100vw;
     height: 100vh;
-    background: $black;
+    background: transparent;
 
     &__close {
-      color: $white;
+      color: $black;
       padding: 6px 3px;
-      background-color: rgb(113, 49, 7);
-      border-radius: 3px;
 
       @include no-select;
     }

@@ -1,36 +1,70 @@
 <template>
-  <div class="compilation">
-    <a class="compilation__title" @click='rotated = !rotated'>
-      Compilation 1
-    </a>
-
-    <ul class="compilation__circle" :class='{"compilation__circle--rotated": rotated}'>
-      <li class="compilation__circle__item" v-for='(item, index) in main.posts' @click='openSlideshow(index)'><img class="compilation__circle__item__image" :src='item.acf.image.sizes["pwr-medium"]' alt="..." /></li>
+  <div class="compilation" v-if='posts.length > 0' :class='{"compilation--blur": slideshowActive}'>
+    <p class="compilation__title" v-html='posts[0].acf.compilation.name'></p>
+    <ul class="compilation__circle" :class='"compilation__circle--" + posts.length + ""'>
+      <li :class='"compilation__circle--" + posts.length + "__item"' v-for='(post, index) in posts' @click='openSlideshow(index)'>
+        <img :class='"compilation__circle--" + posts.length + "__item__image"' :src='post.acf.image.sizes["pwr-medium"]' alt="..." />
+      </li>
     </ul>
+    <slideShow v-if='$route.hash.substring(1) === "images"' :images='imagesArray' :count='0' @close='removeHash'/>
   </div>
 </template>
 
 <script>
 import {mapState, mapActions} from 'vuex'
+import slideShow from '../components/slide-show'
 
 export default {
   name: 'compilation',
+  components: {
+    slideShow
+  },
+  props: {
+    posts: {
+      type: Array,
+      required: true
+    }
+  },
   data() {
     return {
-      rotated: true,
-      count: 0
+      count: 0,
+      slideshowActive: false
     }
   },
   computed: {
-    ...mapState(['main'])
+    ...mapState(['main']),
+    imagesArray() {
+      let result = []
+      this.posts.map(post => {
+        result.push({
+          url: post.acf.image.sizes['pwr-large']
+        })
+      })
+      return result
+    }
   },
   mounted() {
     this.GET_POSTS()
+    console.log('go!')
   },
   methods: {
     ...mapActions(['GET_POSTS']),
     openSlideshow(index) {
+      this.slideshowActive = true
       this.$router.push({name: this.$route.name, hash: '#images', params: {slug: this.$route.params.slug, count: this.count}})
+    },
+    removeHash() {
+      this.$router.push({name: 'main', hash: '', params: {slug: this.$route.params.slug}})
+      this.slideshowActive = false
+    }
+  },
+  watch: {
+    '$route' (to, from) {
+      if (this.$route.hash.substring(1) === 'images') {
+        this.slideshowActive = true
+      } else {
+        this.slideshowActive = false
+      }
     }
   }
 }
@@ -44,10 +78,19 @@ export default {
 
 .compilation {
   position: relative;
-  height: 100vmin;
-  width: 100vmin;
-  display: flex;
-  align-items: center;
+  width: 50vw;
+  height: 50vh;
+
+  @include screen-size('small') {
+    width: 100vw;
+    height: 100vmin;
+  }
+
+  &--blur {
+    *:not(.popup) {
+      filter: blur(5px);
+    }
+  }
 
   &__title {
     display: block;
@@ -61,24 +104,15 @@ export default {
   }
 
   &__circle {
-    margin: 0 auto;
-    z-index: 0;
+    margin-top: $line-height;
 
-    @include on-circle(4, 80vmin, 0, 120);
+    @include center;
 
-    &__item {
-      &__image {
-        display: block;
-        max-width: 100%;
-        border-radius: 0;
-        transition: 0.15s;
+    @for $i from 1 through 20 {
+      @include modifier($i) {
+        @include on-circle($i, $circle-l, $item-l);
+        @include in-circle;
       }
-    }
-
-    &--rotated {
-      color: black;
-
-      @include on-circle(3, 80vmin, 200px, 0);
     }
   }
 }
