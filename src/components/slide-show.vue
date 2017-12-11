@@ -16,7 +16,7 @@ export default {
   name: 'slide-show',
   data() {
     return {
-      index: this.$route.params.count,
+      index: this.count,
       interval: ''
     }
   },
@@ -73,7 +73,7 @@ export default {
     }
   },
   mounted() {
-    this.go()
+    // this.go()
   },
   beforeDestroy() {
     window.removeEventListener('keydown', this.navigation)
