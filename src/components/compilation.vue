@@ -2,18 +2,23 @@
   <div class="compilation" v-if='content.length > 0' :class='{"compilation--blur": slideshowActive}'>
     <p class="compilation__title" v-html='content[0].acf.compilation.name'></p>
     <ul class="compilation__circle" :class='"compilation__circle--" + content.length + ""'>
-      <li :class='"compilation__circle--" + content.length + "__item"' v-for='(post, index) in content' @click='$emit("passImgs")'>
-        <img :class='"compilation__circle--" + content.length + "__item__image"' :src='post.acf.image.sizes["pwr-medium"]' alt="..." />
+      <li :class='"compilation__circle--" + content.length + "__item"' v-for='(post, index) in content' @click='openSlideshow(0)'>
+        <img :class='"compilation__circle--" + content.length + "__item__image"' :src='post.acf.image.sizes["pwr-medium"]' alt="..."/>
       </li>
     </ul>
+    <slideShow v-if='$route.hash.substring(1) === "images" && $route.params.id === content[0].acf.compilation.name' :images='slideshowImages()' :count='0' @open='openSlideshow' @close='removeHash'/>
   </div>
 </template>
 
 <script>
 import {mapState} from 'vuex'
+import slideShow from '../components/slide-show'
 
 export default {
   name: 'compilation',
+  components: {
+    slideShow
+  },
   props: {
     content: {
       type: Array,
@@ -27,21 +32,34 @@ export default {
     }
   },
   computed: {
-    ...mapState(['main']),
-    imagesArray() {
+    ...mapState(['main'])
+  },
+  methods: {
+    openSlideshow(index) {
+      this.slideshowActive = true
+      this.$router.push({name: this.$route.name, hash: '#images', params: {id: this.content[0].acf.compilation.name}})
+    },
+    removeHash() {
+      this.$router.push({name: 'main', hash: '', params: {slug: this.$route.params.slug}})
+      this.slideshowActive = false
+    },
+    slideshowImages() {
       let result = []
-      this.content.map(post => {
+      this.content.map(image => {
         result.push({
-          url: post.acf.image.sizes['pwr-large']
+          url: image.acf.image.sizes['pwr-large']
         })
       })
       return result
     }
   },
-  methods: {
-    openSlideshow(index) {
-      this.slideshowActive = true
-      this.$router.push({name: this.$route.name, hash: '#images'})
+  watch: {
+    '$route' (to, from) {
+      if (this.$route.hash.substring(1) === 'images') {
+        this.slideshowActive = true
+      } else {
+        this.slideshowActive = false
+      }
     }
   }
 }

@@ -2,7 +2,6 @@
   <div class="main">
     <div class="main__compilations">
       <compilation v-for='category in main.categories' :content='compilation(category.name)'/>
-      <slideShow v-if='$route.hash.substring(1) === "images"' @passImgs='onImagesPassed' :images='slideshowImages' :count='0' @close='removeHash'/>
     </div>
   </div>
 </template>
@@ -15,25 +14,15 @@ import slideShow from '../components/slide-show'
 
 export default {
   name: 'ak-main',
-  data() {
-    return {
-      slideshowImages: []
-    }
-  },
   components: {
     compilation,
-    headBar,
-    slideShow
+    headBar
   },
   computed: {
     ...mapState(['main'])
   },
   methods: {
     ...mapActions(['GET_CATEGORIES', 'GET_POSTS']),
-    onImagesPassed(value) {
-      console.log(value)
-      this.slideshowImages = value
-    },
     compilation(name) {
       let result = []
       this.main.posts.map(post => {
@@ -42,19 +31,6 @@ export default {
         }
       })
       return result
-    },
-    removeHash() {
-      this.$router.push({name: 'main', hash: '', params: {slug: this.$route.params.slug}})
-      this.slideshowActive = false
-    }
-  },
-  watch: {
-    '$route' (to, from) {
-      if (this.$route.hash.substring(1) === 'images') {
-        this.slideshowActive = true
-      } else {
-        this.slideshowActive = false
-      }
     }
   },
   mounted() {

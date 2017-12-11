@@ -1,9 +1,9 @@
 <template>
-  <div class='popup' @touchmove.stop.prevent>
+  <div class='popup' @touchmove.stop.prevent :class='{"popup--left": user && left, "popup--right": user && !left}'>
 
-    <div class="popup__slideshow">
+    <div class="popup__slideshow" @click='userTakeOver'>
       <img class="popup__slideshow__image" :src='images[index].url'/>
-      <span class="popup__slideshow__close" @click='$emit("close")'>escape</span>
+      <span class="popup__slideshow__close" @click='$emit("close")'>esc</span>
     </div>
 
   </div>
@@ -17,7 +17,10 @@ export default {
   data() {
     return {
       index: this.count,
-      interval: ''
+      interval: '',
+      user: false,
+      left: true,
+      w: window.innerWidth
     }
   },
   props: {
@@ -36,6 +39,23 @@ export default {
       this.interval = setInterval(() => {
         self.next()
       }, 1000)
+    },
+    arrows(event) {
+      if (event.clientX > this.w / 2) this.left = false
+      else this.left = true
+    },
+    userTakeOver(event) {
+      if (!this.user) {
+        window.addEventListener('mousemove', this.arrows)
+        clearInterval(this.interval)
+        this.user = true
+      } else {
+        if (event.clientX > this.w / 2) {
+          this.next()
+        } else {
+          this.previous()
+        }
+      }
     },
     navigation(event) {
       if (event.keyCode === 37) this.previous()
@@ -73,9 +93,10 @@ export default {
     }
   },
   mounted() {
-    // this.go()
+    this.go()
   },
   beforeDestroy() {
+    window.removeEventListener('mousemove', this.arrows)
     window.removeEventListener('keydown', this.navigation)
     clearInterval(this.interval)
   }
@@ -95,6 +116,15 @@ export default {
   left: 0;
   z-index: 100;
   background: rgba(255, 255, 255, 0.4);
+  cursor: url('../../static/pause@2x.png'), pointer;
+
+  &--right {
+    cursor: e-resize;
+  }
+
+  &--left {
+    cursor: w-resize;
+  }
 
   &__slideshow {
     width: 100vw;
@@ -103,13 +133,17 @@ export default {
 
     &__close {
       color: $black;
-      padding: 6px 3px;
+      display: block;
+      padding-top: 12px;
+      padding-left: $line-height;
+      cursor: nw-resize;
 
       @include no-select;
     }
 
     &__image {
       max-width: 90vmin;
+      max-height: 90vh;
 
       @include center;
     }
