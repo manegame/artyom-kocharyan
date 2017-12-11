@@ -1,12 +1,12 @@
 <template>
-  <div class="compilation" v-if='content.length > 0' :class='{"compilation--blur": slideshowActive}'>
-    <p class="compilation__title" v-html='content[0].acf.compilation.name'></p>
-    <ul class="compilation__circle" :class='"compilation__circle--" + content.length + ""'>
-      <li :class='"compilation__circle--" + content.length + "__item"' v-for='(post, index) in content' @click='openSlideshow(0)'>
-        <img :class='"compilation__circle--" + content.length + "__item__image"' :src='post.acf.image.sizes["pwr-medium"]' alt="..."/>
+  <div class="compilation" :class='{"compilation--blur": slideshowActive}'>
+    <p class="compilation__title" v-html='content.title.rendered'></p>
+    <ul class="compilation__circle" :class='"compilation__circle--" + content.acf.images.length + ""'>
+      <li :class='"compilation__circle--" + content.acf.images.length + "__item"' @click='openSlideshow(0)' v-for='img in content.acf.images'>
+        <img :class='"compilation__circle--" + content.acf.images.length + "__item__image"' :src='img.image.sizes["pwr-medium"]' alt="..."/>
       </li>
     </ul>
-    <slideShow v-if='$route.hash.substring(1) === "images" && $route.params.id === content[0].acf.compilation.name' :images='slideshowImages()' :count='0' @open='openSlideshow' @close='removeHash'/>
+    <slideShow v-if='$route.hash.substring(1) === "images" && $route.params.id === content.title.rendered' :images='slideshowImages()' :count='0' :slideshow='content.acf.slideshow' @open='openSlideshow' @close='removeHash'/>
   </div>
 </template>
 
@@ -21,7 +21,7 @@ export default {
   },
   props: {
     content: {
-      type: Array,
+      type: Object,
       required: true
     }
   },
@@ -37,17 +37,18 @@ export default {
   methods: {
     openSlideshow(index) {
       this.slideshowActive = true
-      this.$router.push({name: this.$route.name, hash: '#images', params: {id: this.content[0].acf.compilation.name}})
+      this.$router.push({name: this.$route.name, hash: '#images', params: {id: this.content.title.rendered}})
     },
     removeHash() {
       this.$router.push({name: 'main', hash: '', params: {slug: this.$route.params.slug}})
       this.slideshowActive = false
     },
     slideshowImages() {
+      console.log('preparing array')
       let result = []
-      this.content.map(image => {
+      this.content.acf.images.map(img => {
         result.push({
-          url: image.acf.image.sizes['pwr-large']
+          url: img.image.sizes['pwr-large']
         })
       })
       return result
@@ -83,7 +84,7 @@ export default {
 
   &--blur {
     *:not(.popup) {
-      filter: blur(5px);
+      filter: blur(15px);
     }
   }
 

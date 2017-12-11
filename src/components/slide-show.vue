@@ -1,7 +1,7 @@
 <template>
-  <div class='popup' @touchmove.stop.prevent :class='{"popup--left": user && left, "popup--right": user && !left}'>
+  <div class='popup' @touchmove.stop.prevent :class='{"popup--left": !autoplay && left, "popup--right": !autoplay && !left, "popup--autoplay": autoplay, "popup--autoplay--paused": autoplay && paused}'>
 
-    <div class="popup__slideshow" @click='userTakeOver'>
+    <div class="popup__slideshow" @click='navigation'>
       <img class="popup__slideshow__image" :src='images[index].url'/>
       <span class="popup__slideshow__close" @click='$emit("close")'>esc</span>
     </div>
@@ -18,8 +18,9 @@ export default {
     return {
       index: this.count,
       interval: '',
-      user: false,
       left: true,
+      user: false,
+      paused: false,
       w: window.innerWidth
     }
   },
@@ -31,37 +32,32 @@ export default {
     count: {
       type: Number,
       required: true
+    },
+    slideshow: {
+      type: String,
+      required: true
     }
   },
   methods: {
     go () {
       const self = this
       this.interval = setInterval(() => {
-        self.next()
+        if (!this.paused) {
+          self.next()
+        }
       }, 1000)
     },
     arrows(event) {
       if (event.clientX > this.w / 2) this.left = false
       else this.left = true
     },
-    userTakeOver(event) {
-      if (!this.user) {
-        window.addEventListener('mousemove', this.arrows)
-        clearInterval(this.interval)
-        this.user = true
-      } else {
-        if (event.clientX > this.w / 2) {
-          this.next()
-        } else {
-          this.previous()
-        }
-      }
-    },
     navigation(event) {
-      if (event.keyCode === 37) this.previous()
-      if (event.keyCode === 39) this.next()
-      if (event.keyCode === 27) {
-        this.$emit('close')
+      if (this.autoplay) {
+        this.paused = !this.paused
+      } else {
+        if (event.keyCode === 37 || event.clientX < this.w / 2) this.previous()
+        if (event.keyCode === 39 || event.clientX > this.w / 2) this.next()
+        if (event.keyCode === 27) this.$emit('close')
       }
     },
     previous() {
@@ -82,6 +78,13 @@ export default {
     }
   },
   computed: {
+    autoplay() {
+      if (this.slideshow === 'autoplay') return true
+      else {
+        window.addEventListener('mousemove', this.arrows)
+        return false
+      }
+    },
     max() {
       return this.images.length
     }
@@ -93,7 +96,8 @@ export default {
     }
   },
   mounted() {
-    this.go()
+    if (this.autoplay) this.go()
+    else this.user = true
   },
   beforeDestroy() {
     window.removeEventListener('mousemove', this.arrows)
@@ -116,7 +120,14 @@ export default {
   left: 0;
   z-index: 100;
   background: rgba(255, 255, 255, 0.4);
-  cursor: url('../../static/pause@2x.png'), pointer;
+
+  &--autoplay {
+    cursor: url('../../static/pause@2x.png'), pointer;
+
+    &--paused {
+      cursor: pointer;
+    }
+  }
 
   &--right {
     cursor: e-resize;

@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <div class="main__compilations">
-      <compilation v-for='category in main.categories' :content='compilation(category.name)'/>
+      <compilation v-for='post in main.posts' :content='post'/>
     </div>
   </div>
 </template>
@@ -10,7 +10,6 @@
 import {mapState, mapActions} from 'vuex'
 import compilation from '../components/compilation'
 import headBar from '../components/head-bar'
-import slideShow from '../components/slide-show'
 
 export default {
   name: 'ak-main',
@@ -22,19 +21,9 @@ export default {
     ...mapState(['main'])
   },
   methods: {
-    ...mapActions(['GET_CATEGORIES', 'GET_POSTS']),
-    compilation(name) {
-      let result = []
-      this.main.posts.map(post => {
-        if (post.acf.compilation.name === name) {
-          result.push(post)
-        }
-      })
-      return result
-    }
+    ...mapActions(['GET_POSTS'])
   },
   mounted() {
-    this.GET_CATEGORIES()
     this.GET_POSTS()
   }
 }
