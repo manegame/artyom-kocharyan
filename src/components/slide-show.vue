@@ -1,5 +1,5 @@
 <template>
-  <div class='popup' @touchmove.stop.prevent :class='{"popup--left": !autoplay && left, "popup--right": !autoplay && !left, "popup--autoplay": autoplay, "popup--autoplay--paused": autoplay && paused}'>
+  <div class='popup' @touchmove.stop.prevent :class='{"popup--single": !left, "popup--left": !autoplay && left, "popup--right": !autoplay && !left, "popup--autoplay": autoplay, "popup--autoplay--paused": autoplay && paused}'>
 
     <div class="popup__slideshow" @click='navigation'>
       <img class="popup__slideshow__image" :src='images[index].url'/>
@@ -48,8 +48,10 @@ export default {
       }, 1000)
     },
     arrows(event) {
-      if (event.clientX > this.w / 2) this.left = false
-      else this.left = true
+      if (this.images !== 1) {
+        if (event.clientX > this.w / 2) this.left = false
+        else this.left = true
+      }
     },
     navigation(event) {
       if (this.autoplay) {
@@ -80,6 +82,7 @@ export default {
   computed: {
     autoplay() {
       if (this.slideshow === 'autoplay') return true
+      else if (this.images.length === 1) return false
       else {
         window.addEventListener('mousemove', this.arrows)
         return false
