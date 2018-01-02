@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <div class="main__compilations">
-      <compilation v-for='post in main.posts' :content='post'/>
+      <scatter v-for='post in main.posts' :content='post'/>
     </div>
   </div>
 </template>
@@ -9,12 +9,14 @@
 <script>
 import {mapState, mapActions} from 'vuex'
 import compilation from '../components/compilation'
+import scatter from '../components/scatter'
 import headBar from '../components/head-bar'
 
 export default {
   name: 'ak-main',
   components: {
     compilation,
+    scatter,
     headBar
   },
   computed: {
@@ -42,14 +44,14 @@ export default {
   &__compilations {
     position: relative;
     width: 100vw;
-    height: auto;
+    height: 100vh;
     background: $white;
     float: left;
     overflow-y: scroll;
     display: flex;
     flex-flow: row wrap;
     align-items: flex-start;
-    justify-content: flex-end;
+    justify-content: space-around;
 
     @include hide-scroll;
   }

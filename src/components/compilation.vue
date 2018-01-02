@@ -1,32 +1,63 @@
 <template>
-  <transition appear>
-    <div class="compilation" :class='{"compilation--blur": slideshowActive}' v-if='!zoom'>
-      <p class="compilation__title" v-html='content.title.rendered' @click='zoom = !zoom'></p>
-      <ul class="compilation__circle" :class='"compilation__circle--" + content.acf.images.length + ""'>
-        <li :class='"compilation__circle--" + content.acf.images.length + "__item"' @click='openSlideshow(0)' v-for='img in content.acf.images'>
-          <img :class='"compilation__circle--" + content.acf.images.length + "__item__image"' :src='img.image.sizes["pwr-medium"]' alt="..."/>
-        </li>
-      </ul>
+  <div class="compilation"
+       :class='{"compilation--blur": slideshowActive}'
+       v-if='!zoom'>
+    <p class="compilation__title"
+       v-html='content.title.rendered'
+       @click='zoom = !zoom'/>
+    <ul class="compilation__circle"
+        :class='"compilation__circle--" + content.acf.images.length + ""'>
+      <li :class='"compilation__circle--" + content.acf.images.length + "__item"'
+          @click='openSlideshow(0)'
+          v-for='img in content.acf.images'>
+        <img :class='"compilation__circle--" + content.acf.images.length + "__item__image"'
+             :src='img.image.sizes["pwr-small"]'
+             alt="..."/>
+      </li>
+    </ul>
 
-      <slideShow v-if='$route.hash.substring(1) === "images" && $route.params.id === content.title.rendered' :images='slideshowImages()' :count='0' :slideshow='content.acf.slideshow' @open='openSlideshow' @close='removeHash'/>
-    </div>
+    <slideShow  v-if='$route.hash.substring(1) === "images" && $route.params.id === content.title.rendered'
+                :images='slideshowImages()'
+                :count='0'
+                :slideshow='content.acf.slideshow'
+                @open='openSlideshow'
+                @close='removeHash'/>
+  </div>
 
-    <div class="compilation--single" :class='{"compilation--blur": slideshowActive}' v-else>
-      <ul class="compilation--single__circle" :class='"compilation--single__circle--" + content.acf.images.length + ""'>
-        <li :class='"compilation--single__circle--" + content.acf.images.length + "__item"' @click='openSlideshow(0)' v-for='img in content.acf.images'>
-          <img :class='"compilation--single__circle--" + content.acf.images.length + "__item__image"' :src='img.image.sizes["pwr-medium"]' alt="..."/>
-        </li>
-      </ul>
+  <div class="compilation--single"
+       :class='{"compilation--blur": slideshowActive}'
+       v-else>
+    <ul class="compilation--single__circle"
+        :class='"compilation--single__circle--" + content.acf.images.length + ""'>
+      <li :class='"compilation--single__circle--" + content.acf.images.length + "__item"'
+          @click='openSlideshow(0)'
+          v-for='img in content.acf.images'>
+        <img :class='"compilation--single__circle--" + content.acf.images.length + "__item__image"'
+             :src='img.image.sizes["pwr-medium"]'
+             alt="..."/>
+      </li>
+    </ul>
+    <p class="compilation--single__text"
+       v-if='content.acf.description !== ""'>
+      <span class="compilation--single__text--body"
+            v-if='showText'
+            v-html='content.acf.description'></span>
+      <br/>
+      <span class="compilation--single__text--call"
+            @click='showText = !showText'
+            v-html='textCall'/>
+    </p>
+    <p class="compilation--single__title"
+       @click='zoom = !zoom'
+       v-html='content.title.rendered'/>
 
-      <p class="compilation--single__text" v-if='content.acf.description !== ""'>
-        <span class="compilation--single__text--body" v-if='showText' v-html='content.acf.description'></span><br/>
-        <span class="compilation--single__text--call" v-html='textCall' @click='showText = !showText'></span>
-      </p>
-      <p class="compilation--single__title" v-html='content.title.rendered' @click='zoom = !zoom'></p>
-
-      <slideShow v-if='$route.hash.substring(1) === "images" && $route.params.id === content.title.rendered' :images='slideshowImages()' :count='0' :slideshow='content.acf.slideshow' @open='openSlideshow' @close='removeHash'/>
-    </div>
-  </transition>
+    <slideShow v-if='$route.hash.substring(1) === "images" && $route.params.id === content.title.rendered'
+               :images='slideshowImages()'
+               :count='0'
+               :slideshow='content.acf.slideshow'
+               @open='openSlideshow'
+               @close='removeHash'/>
+  </div>
 </template>
 
 <script>
@@ -119,7 +150,7 @@ export default {
 
 .compilation {
   position: relative;
-  width: 50vw;
+  width: 20vw;
   height: 50vh;
 
   @include screen-size('small') {
