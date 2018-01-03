@@ -60,14 +60,14 @@ export default {
         top: newTop,
         left: newLeft
       }
-      // this.$refs.main.scrollLeft = newLeft
-      // this.$refs.main.scrollTop = newTop
+    },
+    updateScroll(event) {
+      this.scroll.top = event.target.scrollTop
+      this.scroll.left = event.target.scrollLeft
     }
   },
   watch: {
     scroll(newValue, oldValue) {
-      // console.log(this.scroll.left)
-      // console.log(this.scroll.top)
       var vm = this
       function animate () {
         if (TWEEN.update()) {
@@ -97,14 +97,15 @@ export default {
     },
     animatedLeft() {
       this.$refs.main.scrollLeft = this.animatedLeft
-    },
-    zoom() {
-      // this.scrollMiddle()
     }
   },
   mounted() {
     this.GET_POSTS()
-    // this.scrollMiddle()
+    this.scrollMiddle()
+    this.$refs.main.addEventListener('scroll', this.updateScroll)
+  },
+  destroyed() {
+    this.$refs.main.removeEventListener('scroll', this.updateScroll)
   }
 }
 </script>
