@@ -18,6 +18,7 @@
 
 <script>
 import {mapState, mapActions} from 'vuex'
+import TWEEN from 'tween.js'
 import headbar from '../components/headbar'
 import scatterCell from '../components/scatter-cell'
 
@@ -25,9 +26,15 @@ export default {
   name: 'ak-main',
   data() {
     return {
-      zoom: 2,
+      zoom: 3,
       wW: window.innerWidth,
-      wH: window.innerHeight
+      wH: window.innerHeight,
+      animatedTop: 0,
+      animatedLeft: 0,
+      scroll: {
+        top: 0,
+        left: 0
+      }
     }
   },
   components: {
@@ -49,18 +56,55 @@ export default {
       console.log(dimensions)
       let newLeft = dimensions.x + (dimensions.w / 2) - (this.wW / 2)
       let newTop = dimensions.y + (dimensions.h / 2) - (this.wH / 2)
-      this.$refs.main.scrollLeft = newLeft
-      this.$refs.main.scrollTop = newTop
+      this.scroll = {
+        top: newTop,
+        left: newLeft
+      }
+      // this.$refs.main.scrollLeft = newLeft
+      // this.$refs.main.scrollTop = newTop
     }
   },
   watch: {
+    scroll(newValue, oldValue) {
+      // console.log(this.scroll.left)
+      // console.log(this.scroll.top)
+      var vm = this
+      function animate () {
+        if (TWEEN.update()) {
+          window.requestAnimationFrame(animate)
+        }
+      }
+
+      new TWEEN.Tween({
+        tweenLeft: oldValue.left,
+        tweenTop: oldValue.top
+      })
+        .easing(TWEEN.Easing.Quadratic.Out)
+        .to({
+          tweenLeft: newValue.left,
+          tweenTop: newValue.top
+        }, 500)
+        .onUpdate(function () {
+          vm.animatedLeft = this.tweenLeft.toFixed(0)
+          vm.animatedTop = this.tweenTop.toFixed(0)
+        })
+        .start()
+
+      animate()
+    },
+    animatedTop() {
+      this.$refs.main.scrollTop = this.animatedTop
+    },
+    animatedLeft() {
+      this.$refs.main.scrollLeft = this.animatedLeft
+    },
     zoom() {
-      this.scrollMiddle()
+      // this.scrollMiddle()
     }
   },
   mounted() {
     this.GET_POSTS()
-    this.scrollMiddle()
+    // this.scrollMiddle()
   }
 }
 </script>
@@ -75,6 +119,7 @@ export default {
   width: 100vw;
   height: 100vh;
   overflow: scroll;
+  color: black;
 }
 
 .overlay {
@@ -98,6 +143,7 @@ export default {
   color: black;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
+  grid-gap: 5vw 2vh;
   grid-template-rows: repeat(10, 1fr);
 
   &--zoom_1 {
