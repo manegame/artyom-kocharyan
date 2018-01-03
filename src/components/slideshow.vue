@@ -1,11 +1,19 @@
 <template>
-  <div class='popup' @touchmove.stop.prevent :class='{"popup--single": !left, "popup--left": !autoplay && left, "popup--right": !autoplay && !left, "popup--autoplay": autoplay, "popup--autoplay--paused": autoplay && paused}'>
-
-    <div class="popup__slideshow" @click='navigation'>
-      <img class="popup__slideshow__image" :src='images[index].url'/>
-      <span class="popup__slideshow__close" @click='$emit("close")'>esc</span>
+  <div class='popup' @touchmove.stop.prevent
+                    :class='{
+                      "popup--single": !left,
+                      "popup--left": !autoplay && left,
+                      "popup--right": !autoplay && !left,
+                      "popup--autoplay": autoplay,
+                      "popup--autoplay--paused": autoplay && paused}'>
+    <div    class="popup__slideshow"
+            @click='navigation'>
+      <img  class="popup__slideshow__image"
+            :src='images[index].url'/>
+      <span class="popup__slideshow__close"
+            @click='$emit("close")'
+            v-html='"esc"'/>
     </div>
-
   </div>
 </template>
 
@@ -13,7 +21,7 @@
 // import GIF from 'gif.js.optimized'
 
 export default {
-  name: 'slide-show',
+  name: 'slideshow',
   data() {
     return {
       index: this.count,

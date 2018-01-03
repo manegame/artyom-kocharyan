@@ -1,17 +1,17 @@
 <template>
-  <div class="head-bar">
+  <div class="headbar">
     <router-link :to="{ name: 'main' }">Artyom Kocharyan</router-link>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'head-bar'
+  name: 'headbar'
 }
 </script>
 
 <style>
-.head-bar {
-  z-index: 1000;
+.headbar {
+  position: fixed;
 }
 </style>

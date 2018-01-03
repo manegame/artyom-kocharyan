@@ -22,7 +22,10 @@ const router = new VueRouter({
       name: 'main',
       component: akMain
     }
-  ]
+  ],
+  scrollBehavior (to, from, savedPosition) {
+    return { x: 0, y: 0 }
+  }
 })
 
 // Raven

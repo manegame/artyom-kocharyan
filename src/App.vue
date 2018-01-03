@@ -33,7 +33,8 @@ export default {
     ...mapState(['main'])
   },
   watch: {
-    $route(to, from) {}
+    $route(to, from) {
+    }
   },
   mounted() {
     this.$_setMetaTags()
@@ -93,6 +94,7 @@ export default {
 
 <style lang='scss'>
 @import './style/helpers/_mixins.scss';
+@import './style/helpers/_reset.css';
 @import './style/helpers/_responsive.scss';
 @import './style/_variables.scss';
 
