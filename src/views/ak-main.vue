@@ -1,7 +1,7 @@
 <template>
   <div class="main"
        ref='main'>
-    <headbar/>
+    <!-- <headbar/> -->
     <div class="scatter"
          :class='"scatter--zoom_" + zoom'
          ref='scatter'>
@@ -12,8 +12,7 @@
                    @scrollTo='scrollTo'/>
     </div>
     <p class="overlay"
-       v-html='"."'
-       @click='zoom++'/>
+       v-html='"."'/>
   </div>
 </template>
 
@@ -26,7 +25,7 @@ export default {
   name: 'ak-main',
   data() {
     return {
-      zoom: 1,
+      zoom: 2,
       wW: window.innerWidth,
       wH: window.innerHeight
     }
@@ -47,6 +46,7 @@ export default {
       this.$refs.main.scrollTop = newTop
     },
     scrollTo(dimensions) {
+      console.log(dimensions)
       let newLeft = dimensions.x + (dimensions.w / 2) - (this.wW / 2)
       let newTop = dimensions.y + (dimensions.h / 2) - (this.wH / 2)
       this.$refs.main.scrollLeft = newLeft
@@ -97,8 +97,8 @@ export default {
 
   color: black;
   display: grid;
-  grid-template-columns: repeat(5, 20%);
-  grid-template-rows: repeat(10, 10%);
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(10, 1fr);
 
   &--zoom_1 {
     width: $n-1 * 100vw;

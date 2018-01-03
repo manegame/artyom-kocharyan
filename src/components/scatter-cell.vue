@@ -2,15 +2,13 @@
   <div class="scatter__cell"
        :class='"scatter__cell--" + count'
        @click='scrollTo($event)'>
-    <img class="scatter__cell__image"
-         v-for='(image, index) in content.acf.images'
-         v-if='image.image'
-         :style='{
-           top: positionImages("y") + "%",
-           left: positionImages("x") + "%"
-         }'
-         :src='image.image.sizes["thumbnail"]'
-         @click='openSlideshow(index)'/>
+       <div class="scatter__cell__inner"
+            v-for='(image, index) in content.acf.images'
+            v-if='image.image'>
+         <img class="scatter__cell__inner__image"
+              :src='image.image.sizes["pwr-medium"]'
+              @click='openSlideshow(index)'/>
+       </div>
 </div>
 </template>
 
@@ -58,20 +56,76 @@ export default {
   overflow: hidden;
   width: 100%;
   height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-flow: column wrap;
   cursor: pointer;
   transition: background 0.3s ease-out;
+  padding: 20px 40px;
+  display: grid;
+  grid-gap: 10px;
+  grid: 10% 20% 40% 20% 10% / 20% 60% 20%;
 
-  &__image {
-    width: 10%;
-    height: auto;
+  &__inner {
+    width: 100%;
+    height: 100%;
+    align-self: start;
+    justify-self: center;
+    grid-row: auto;
+    grid-column: auto;
+
+    &:first-child {
+      grid-area: 3 / 2 / 4 / 3;
+    }
+
+    &:nth-child(2) {
+      grid-area: 4 / 2 / 5 / 3;
+    }
+
+    &:nth-child(3) {
+      grid-area: 2 / 2 / 3 / 3;
+    }
+
+    &:nth-child(4) {
+      grid-area: 3 / 1 / 4 / 2;
+    }
+
+    &:nth-child(5) {
+      grid-area: 3 / 3 / 4 / 4;
+    }
+
+    &:nth-child(6) {
+      grid-area: 2 / 1 / 3 / 2;
+    }
+
+    &:nth-child(7) {
+      grid-area: 2 / 3 / 3 / 4;
+    }
+
+    &:nth-child(8) {
+      grid-area: 4 / 3 / 5 / 4;
+    }
+
+    &:nth-child(9) {
+      grid-area: 4 / 1 / 5 / 2;
+    }
+
+    &:nth-child(10) {
+      grid-area: 1 / 2 / 2 / 3;
+    }
+
+    &:nth-child(11) {
+      grid-area: 4 / 2 / 5 / 3;
+    }
+
+    &__image {
+      height: 100%;
+      width: 100%;
+      display: block;
+      margin: 0 auto;
+      object-fit: contain;
+    }
   }
 
   &:hover {
-    background: rgba(255, 207, 225, 0.27);
+    /* background: rgba(255, 207, 225, 0.27); */
   }
 
   &--1 {
