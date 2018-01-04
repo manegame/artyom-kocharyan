@@ -1,12 +1,12 @@
 <template>
-  <div class="headbar">
-    <router-link :to="{ name: 'main' }">Artyom Kocharyan</router-link>
+  <div class="footbar">
+    <router-link :to="{ name: 'main', hash: '#burial' }">Burial Artyomovich</router-link>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'headbar'
+  name: 'footbar'
 }
 </script>
 
@@ -16,15 +16,16 @@ export default {
 @import '../style/helpers/_reset.css';
 @import '../style/_variables.scss';
 
-.headbar {
+.footbar {
   position: fixed;
+  bottom: 0;
   width: 100%;
-  top: 0;
   padding: 0 20px;
   text-align: right;
   font-family: 'Times New Roman';
   font-size: $font-size;
   line-height: $line-height * 1.5;
+  height: $line-height * 1.5;
   cursor: pointer;
 }
 </style>

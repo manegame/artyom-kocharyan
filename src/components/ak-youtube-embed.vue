@@ -1,37 +1,40 @@
 <template>
-  <div class="youtube">
-    <youtube :video-id='id' @ready="ready"></youtube>
+  <div class="youtube-embed">
+    <iframe :src='url + "&rel=0"'  frameborder="0" gesture="media" allow="encrypted-media" webkitallowfullscreen mozallowfullscreen allowfullscreen/>
   </div>
 </template>
 
 <script>
-import { getIdFromURL } from 'vue-youtube-embed'
-
 export default {
   name: 'ak-youtube-embed',
   props: {
-    url: {
+    video: {
       type: String,
       required: true
     }
   },
-  computed: {
-    id() {
-      return getIdFromURL(this.url)
+  methods: {
+    findUrl(video) {
+      let test = /https:\/\/.+?(?=")/ // match starts with https, takes everything up until first " char
+      return this.video.match(test)
     }
   },
-  methods: {
-    ready (player) {
-      console.log('ready')
+  computed: {
+    url() {
+      let vimeo = /vimeo/
+      let youtube = /youtube/
+      if (vimeo.test(this.video) || youtube.test(this.video)) {
+        return this.findUrl(this.video)
+      }
     }
   }
 }
 </script>
 
 <style scoped lang='scss'>
-.youtube {
-  width: 100%;
-  height: 100%;
-  text-align: center;
+@import '../style/helpers/_embed.scss';
+
+.youtube-embed {
+  color: black;
 }
 </style>

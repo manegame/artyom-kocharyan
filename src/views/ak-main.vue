@@ -2,6 +2,7 @@
   <div class="main"
        ref='main'>
     <headbar/>
+    <footbar/>
     <div class="scatter"
          :class='"scatter--zoom_" + zoom'
          ref='scatter'>
@@ -11,8 +12,13 @@
                    @scrollTo='scrollTo'/>
     </div>
     <transition name='fade'>
-      <div class="burial" v-if='$route.hash.substring(1) === "burial"'>
-          <akYoutubeEmbed :url='"https://www.youtube.com/watch?v=HDvTqWKWukc"'/>
+      <div class="burial" v-if='$route.hash.substring(1) === "burial"'
+           @click.self='removeHash'>
+        <div class="burial__overview"
+             v-for='video in main.burial_artyomovich.acf.burial_artyomovich'
+             v-if='video.front'>
+             <akYoutubeEmbed :video='video.video'/>
+        </div>
       </div>
     </transition>
   </div>
@@ -22,6 +28,7 @@
 import {mapState, mapActions} from 'vuex'
 import TWEEN from 'tween.js'
 import headbar from '../components/headbar'
+import footbar from '../components/footbar'
 import scatterCell from '../components/scatter-cell'
 import akYoutubeEmbed from '../components/ak-youtube-embed'
 
@@ -42,6 +49,7 @@ export default {
   },
   components: {
     headbar,
+    footbar,
     scatterCell,
     akYoutubeEmbed
   },
@@ -74,6 +82,13 @@ export default {
     updateScroll(event) {
       this.scroll.top = event.target.scrollTop
       this.scroll.left = event.target.scrollLeft
+    },
+    removeHash() {
+      this.$router.push({
+        name: 'main',
+        hash: '',
+        params: {slug: this.$route.params.slug}
+      })
     }
   },
   watch: {
@@ -150,6 +165,16 @@ export default {
   top: 0;
   left: 0;
   background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAADCAYAAABWKLW/AAAAG0lEQVQYV2M0NjbedfbsWTcGBgYGRhABAygcAIfBBAR7Lj4eAAAAAElFTkSuQmCC") center center repeat rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  flex-flow: row wrap;
+
+  &__overview {
+    width: 50%;
+    padding: 20px 60px;
+    object-fit: contain;
+    mix-blend-mode: color-dodge;
+  }
 
   /*
   background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAMSURBVBhXY2BgYAAAAAQAAVzN/2kAAAAASUVORK5CYII=');
@@ -187,7 +212,7 @@ export default {
 
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 1s ease-out;
+  transition: all 1s ease-out;
 }
 
 .fade-enter,
