@@ -8,9 +8,12 @@ import VueHead from 'vue-head'
 // import Raven from 'raven-js'
 // import RavenVue from 'raven-js/plugins/vue'
 import App from './App'
+import VueYouTubeEmbed from 'vue-youtube-embed'
 import store from './store'
 import akMain from './views/ak-main'
+import akSingle from './views/ak-single'
 
+Vue.use(VueYouTubeEmbed)
 Vue.use(VueRouter)
 Vue.use(VueHead)
 
@@ -21,6 +24,11 @@ const router = new VueRouter({
       path: '/',
       name: 'main',
       component: akMain
+    },
+    {
+      path: '/single/:slug/',
+      name: 'single',
+      component: akSingle
     }
   ],
   scrollBehavior (to, from, savedPosition) {

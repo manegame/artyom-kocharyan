@@ -20,11 +20,23 @@ export default {
       )
     })
   },
-  getCategories() {
+  getSingleExhibition(slug) {
     return new Promise((resolve, reject) => {
-      Vue.http.get(API_ROOT + 'categories').then(
+      Vue.http.get(API_ROOT + 'posts?slug=' + slug + '&fields=title,slug,acf').then(
         response => {
-          resolve(response.body)
+          resolve(response.body[0])
+        },
+        response => {
+          reject()
+        }
+      )
+    })
+  },
+  getBurial() {
+    return new Promise((resolve, reject) => {
+      Vue.http.get(API_ROOT + 'pages?slug="burial-artyomovich"&fields=title,slug,acf').then(
+        response => {
+          resolve(response.body[0])
         },
         response => {
           reject()

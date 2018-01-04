@@ -1,2 +1,3 @@
 export const SET_POSTS = 'SET_POSTS'
-export const SET_CATEGORIES = 'SET_CATEGORIES'
+export const SET_BURIAL = 'SET_BURIAL'
+export const SET_SINGLE_EXHIBITION = 'SET_SINGLE_EXHIBITION'

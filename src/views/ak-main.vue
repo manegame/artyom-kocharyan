@@ -1,18 +1,20 @@
 <template>
   <div class="main"
        ref='main'>
-    <!-- <headbar/> -->
+    <headbar/>
     <div class="scatter"
          :class='"scatter--zoom_" + zoom'
          ref='scatter'>
       <scatterCell v-for='(post, index) in main.posts'
                    :content='post'
-                   :references='this.$refs'
                    :count='index + 1'
                    @scrollTo='scrollTo'/>
     </div>
-    <p class="overlay"
-       v-html='"."'/>
+    <transition name='fade'>
+      <div class="burial" v-if='$route.hash.substring(1) === "burial"'>
+          <akYoutubeEmbed :url='"https://www.youtube.com/watch?v=HDvTqWKWukc"'/>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -21,12 +23,13 @@ import {mapState, mapActions} from 'vuex'
 import TWEEN from 'tween.js'
 import headbar from '../components/headbar'
 import scatterCell from '../components/scatter-cell'
+import akYoutubeEmbed from '../components/ak-youtube-embed'
 
 export default {
   name: 'ak-main',
   data() {
     return {
-      zoom: 3,
+      zoom: 2,
       wW: window.innerWidth,
       wH: window.innerHeight,
       animatedTop: 0,
@@ -39,13 +42,17 @@ export default {
   },
   components: {
     headbar,
-    scatterCell
+    scatterCell,
+    akYoutubeEmbed
   },
   computed: {
     ...mapState(['main'])
   },
   methods: {
-    ...mapActions(['GET_POSTS']),
+    ...mapActions([
+      'GET_POSTS',
+      'GET_BURIAL'
+    ]),
     scrollMiddle() {
       let newLeft = this.$refs.scatter.offsetWidth / 2 - this.wW / 2
       let newTop = this.$refs.scatter.offsetHeight / 2 - this.wH / 2
@@ -53,13 +60,16 @@ export default {
       this.$refs.main.scrollTop = newTop
     },
     scrollTo(dimensions) {
-      console.log(dimensions)
       let newLeft = dimensions.x + (dimensions.w / 2) - (this.wW / 2)
       let newTop = dimensions.y + (dimensions.h / 2) - (this.wH / 2)
       this.scroll = {
         top: newTop,
         left: newLeft
       }
+    },
+    setWindow() {
+      this.wW = window.innerWidth
+      this.wH = window.innerHeight
     },
     updateScroll(event) {
       this.scroll.top = event.target.scrollTop
@@ -101,11 +111,8 @@ export default {
   },
   mounted() {
     this.GET_POSTS()
+    this.GET_BURIAL()
     this.scrollMiddle()
-    this.$refs.main.addEventListener('scroll', this.updateScroll)
-  },
-  destroyed() {
-    this.$refs.main.removeEventListener('scroll', this.updateScroll)
   }
 }
 </script>
@@ -136,30 +143,60 @@ export default {
   pointer-events: none;
 }
 
+.burial {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAADCAYAAABWKLW/AAAAG0lEQVQYV2M0NjbedfbsWTcGBgYGRhABAygcAIfBBAR7Lj4eAAAAAElFTkSuQmCC") center center repeat rgba(0, 0, 0, 0.9);
+
+  /*
+  background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAMSURBVBhXY2BgYAAAAAQAAVzN/2kAAAAASUVORK5CYII=');
+  */
+}
+
 .scatter {
+  $w: 80vw;
+  $h: 100vh;
   $n-1: 1;
-  $n-2: 2;
+  $n-2: 1.8;
   $n-3: 3;
 
   color: black;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  grid-gap: 5vw 2vh;
+  grid-gap: 2vh 0;
   grid-template-rows: repeat(10, 1fr);
 
   &--zoom_1 {
-    width: $n-1 * 100vw;
-    height: $n-1 * 100vh;
+    width: $n-1 * $w;
+    height: $n-1 * $h;
   }
 
   &--zoom_2 {
-    width: $n-2 * 100vw;
-    height: $n-2 * 100vh;
+    width: $n-2 * $w;
+    height: $n-2 * $h;
   }
 
   &--zoom_3 {
-    width: $n-3 * 100vw;
-    height: $n-3 * 100vh;
+    width: $n-3 * $w;
+    height: $n-3 * $h;
   }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 1s ease-out;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.fade-enter-to,
+.fade-leave {
+  opacity: 1;
 }
 </style>

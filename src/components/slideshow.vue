@@ -9,7 +9,7 @@
     <div    class="popup__slideshow"
             @click='navigation'>
       <img  class="popup__slideshow__image"
-            :src='images[index].url'/>
+            :src='images[index].image.sizes["pwr-large"]'/>
       <span class="popup__slideshow__close"
             @click='$emit("close")'
             v-html='"esc"'/>
@@ -130,7 +130,7 @@ export default {
   top: 0;
   left: 0;
   z-index: 100;
-  background: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.8);
 
   &--autoplay {
     cursor: url('../../static/pause@2x.png'), pointer;
