@@ -1,18 +1,28 @@
 <template>
   <div class="scatter__cell__inner"
+       :class='{"scatter__cell__inner--large": burial}'
        :style='{
           transform: "rotate(" + randomRotation + "deg) translate(" + animatedTranslation + "px) rotate(-" + randomRotation + "deg)"
          }'>
-    <img class="scatter__cell__inner__image"
+    <div class="scatter__cell__inner__video"
+         v-if='burial'>
+      <akYoutubeEmbed :video='video'/>
+    </div>
+    <img v-else
+        class="scatter__cell__inner__image"
         :src='image.image.sizes["pwr-medium"]'/>
   </div>
 </template>
 
 <script>
 import TWEEN from 'tween.js'
+import akYoutubeEmbed from '../components/ak-youtube-embed'
 
 export default {
   name: 'piece',
+  components: {
+    akYoutubeEmbed
+  },
   data() {
     return {
       translation: 0,
@@ -20,9 +30,17 @@ export default {
     }
   },
   props: {
+    burial: {
+      type: Boolean,
+      required: false
+    },
     image: {
       type: Object,
-      required: true
+      required: false
+    },
+    video: {
+      type: String,
+      required: false
     }
   },
   methods: {
@@ -30,7 +48,8 @@ export default {
       this.translation = this.randomTranslation()
     },
     randomTranslation() {
-      return Math.floor(Math.random() * 120)
+      if (this.burial) return Math.floor(Math.random() * 400)
+      else return Math.floor(Math.random() * 120)
     }
   },
   computed: {
@@ -69,13 +88,20 @@ export default {
 @import '../style/_variables.scss';
 
 .scatter__cell__inner {
+  position: absolute;
   height: 60px;
   width: 100px;
   margin: -30px -50px;
-  position: absolute;
   top: 50%;
   left: 50%;
-  border: 1px solid transparent;
+
+  &--large {
+    $height: calc(400px * (9 / 16));
+
+    width: 400px;
+    height: $height;
+    margin: -200px calc(-1 * (#{$height} / 2));
+  }
 
   &__image {
     height: 100%;

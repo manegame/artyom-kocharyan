@@ -1,15 +1,25 @@
 <template>
   <div class="scatter__cell"
-       :class='"scatter__cell--" + count'>
-       <router-link :to="{ name: 'single', params: { slug: content.slug } }">
-         <piece v-for='(image, index) in content.acf.images'
-                v-if='image.image'
-                :image='image'/>
-        </router-link>
+       :class='"scatter__cell--" + count'
+       @click.self='removeHash'>
+       <template v-if='burial'>
+         <piece v-for='(video, index) in main.burial_artyomovich.acf.burial_artyomovich'
+                v-if='video.front'
+                :video='video.video'
+                :burial='burial'/>
+       </template>
+       <template v-else>
+         <router-link :to="{ name: 'single', params: { slug: content.slug } }">
+           <piece v-for='(image, index) in content.acf.images'
+                  v-if='image.image'
+                  :image='image'/>
+          </router-link>
+        </template>
   </div>
 </template>
 
 <script>
+import {mapState, mapActions} from 'vuex'
 import piece from '../components/piece'
 
 export default {
@@ -30,9 +40,17 @@ export default {
     count: {
       type: Number,
       required: true
+    },
+    burial: {
+      type: Boolean,
+      required: false
     }
   },
+  computed: {
+    ...mapState(['main'])
+  },
   methods: {
+    ...mapActions(['GET_BURIAL']),
     handleClick(index, event) {
       if (this.target === event.target) this.openSlideshow(index)
       else this.target = event.target
@@ -56,6 +74,15 @@ export default {
     animate(event) {
       event.target.offsetTop += 100
       console.log(event.target.offsetTop)
+    },
+    removeHash() {
+      if (this.burial) {
+        this.$router.push({
+          name: 'main',
+          hash: '',
+          params: {slug: this.$route.params.slug}
+        })
+      }
     }
   }
 }
@@ -88,6 +115,10 @@ export default {
   cursor: pointer;
   position: relative;
   border-radius: 50%;
+
+  &--0 {
+    grid-area: 1 / 1 / 9 / 9;
+  }
 
   &--1 {
     grid-column: 3 / 4;

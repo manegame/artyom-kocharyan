@@ -12,13 +12,11 @@
                    @scrollTo='scrollTo'/>
     </div>
     <transition name='fade'>
-      <div class="burial" v-if='$route.hash.substring(1) === "burial"'
-           @click.self='removeHash'>
-        <div class="burial__overview"
-             v-for='video in main.burial_artyomovich.acf.burial_artyomovich'
-             v-if='video.front'>
-             <akYoutubeEmbed :video='video.video'/>
-        </div>
+      <div class="burial" v-if='$route.hash.substring(1) === "burial"'>
+           <scatterCell :content='video'
+                        :burial='true'
+                        :count='0'
+                        @scrollTo='scrollTo'/>
       </div>
     </transition>
   </div>
@@ -30,7 +28,6 @@ import TWEEN from 'tween.js'
 import headbar from '../components/headbar'
 import footbar from '../components/footbar'
 import scatterCell from '../components/scatter-cell'
-import akYoutubeEmbed from '../components/ak-youtube-embed'
 
 export default {
   name: 'ak-main',
@@ -50,8 +47,7 @@ export default {
   components: {
     headbar,
     footbar,
-    scatterCell,
-    akYoutubeEmbed
+    scatterCell
   },
   computed: {
     ...mapState(['main'])
@@ -165,16 +161,6 @@ export default {
   top: 0;
   left: 0;
   background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAADCAYAAABWKLW/AAAAG0lEQVQYV2M0NjbedfbsWTcGBgYGRhABAygcAIfBBAR7Lj4eAAAAAElFTkSuQmCC") center center repeat rgba(0, 0, 0, 0.9);
-  display: flex;
-  align-items: center;
-  flex-flow: row wrap;
-
-  &__overview {
-    width: 50%;
-    padding: 20px 60px;
-    object-fit: contain;
-    mix-blend-mode: color-dodge;
-  }
 
   /*
   background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAMSURBVBhXY2BgYAAAAAQAAVzN/2kAAAAASUVORK5CYII=');
