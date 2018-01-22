@@ -1,17 +1,20 @@
 <template>
-  <div class="scatter__cell__inner"
-       :class='{"scatter__cell__inner--large": burial}'
-       :style='{
-          transform: "rotate(" + randomRotation + "deg) translate(" + animatedTranslation + "px) rotate(-" + randomRotation + "deg)"
-         }'>
-    <div class="scatter__cell__inner__video"
-         v-if='burial'>
-      <akYoutubeEmbed :video='video'/>
-    </div>
-    <img v-else
-        class="scatter__cell__inner__image"
-        :src='image.image.sizes["pwr-medium"]'/>
-  </div>
+  <transition appear
+              name='fade'>
+              <div class="scatter__cell__inner"
+                   :class='{"scatter__cell__inner--large": burial}'
+                   :style='{
+                      transform: "rotate(" + randomRotation + "deg) translate(" + animatedTranslation + "px) rotate(-" + randomRotation + "deg)"
+                     }'>
+                <div class="scatter__cell__inner__video"
+                     v-if='burial'>
+                  <akYoutubeEmbed :video='video'/>
+                </div>
+                <img v-else
+                    class="scatter__cell__inner__image"
+                    :src='image.image.sizes["pwr-medium"]'/>
+              </div>
+  </transition>
 </template>
 
 <script>
@@ -25,7 +28,7 @@ export default {
   },
   data() {
     return {
-      translation: 0,
+      translation: 400,
       animatedTranslation: 0
     }
   },
@@ -44,9 +47,6 @@ export default {
     }
   },
   methods: {
-    done() {
-      this.translation = this.randomTranslation()
-    },
     randomTranslation() {
       if (this.burial) return Math.floor(Math.random() * 400)
       else return Math.floor(Math.random() * 120)
@@ -66,13 +66,12 @@ export default {
         }
       }
       new TWEEN.Tween({ tweenTranslation: oldValue })
-        .easing(TWEEN.Easing.Quadratic.Out)
-        .to({ tweenTranslation: newValue }, 1000 + Math.floor(Math.random() * 1000))
+        .easing(TWEEN.Easing.Exponential.InOut)
+        .to({ tweenTranslation: newValue }, 5000 + Math.floor(Math.random() * 3000))
         .onUpdate(function () {
           vm.animatedTranslation = this.tweenTranslation.toFixed(0)
         })
         .start()
-        // .onComplete(this.done)
       animate()
     }
   },
@@ -85,6 +84,7 @@ export default {
 <style scoped lang='scss'>
 @import '../style/helpers/_mixins.scss';
 @import '../style/helpers/_responsive.scss';
+@import '../style/helpers/_transitions.scss';
 @import '../style/_variables.scss';
 
 .scatter__cell__inner {

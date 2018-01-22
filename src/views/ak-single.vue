@@ -1,19 +1,38 @@
 <template>
-  <div class="single">
-    <p v-html='main.single.acf.description'>
-    <div class="images">
-      <img v-for='(image, index) in main.single.acf.images'
-           v-if='image.image'
-           :src='image.image.sizes["pwr-medium"]'
-           @click='openSlideshow(index)'/>
+  <transition appear name='fade'>
+    <div class="single">
+      <div class="single__content">
+        <div class="single__content__text">
+          <router-link class='single__content__text__back' :to="{ name: 'main' }">back</router-link>
+          <h1 class="single__content__text__title"
+              v-html='main.single.title.rendered'/>
+          <h1 class="single__content__text__button"
+              v-if='main.single.acf.description !== ""'
+              v-html='"description"'
+              @click='description = !description' />
+        </div>
+        <div class='single__content__images'>
+          <img class='single__content__images__image'
+               v-for='(image, index) in main.single.acf.images'
+               v-if='image.image'
+               :src='image.image.sizes["pwr-medium"]'
+               @click='openSlideshow(index)'/>
+        </div>
+        <div class='single__content__description'
+           :class='{"single__content__description--active": description}'
+           @click='description = !description'>
+           <p class='single__content__description__text'
+              v-html='main.single.acf.description' />
+         </div>
+      </div>
+      <slideshow v-if='$route.hash.substring(1) === "images"'
+                 :images='main.single.acf.images'
+                 :slideshow='main.single.acf.slideshow'
+                 :count='this.index'
+                 @open='openSlideshow'
+                 @close='removeHash'/>
     </div>
-    <slideshow v-if='$route.hash.substring(1) === "images"'
-               :images='main.single.acf.images'
-               :slideshow='main.single.acf.slideshow'
-               :count='this.index'
-               @open='openSlideshow'
-               @close='removeHash'/>
-  </div>
+  </transition>
 </template>
 
 <script>
@@ -27,7 +46,8 @@ export default {
   },
   data() {
     return {
-      index: 0
+      index: 0,
+      description: false
     }
   },
   computed: {
@@ -50,8 +70,11 @@ export default {
       })
     }
   },
-  mounted() {
+  beforeMount() {
     this.GET_SINGLE_EXHIBITION(this.$route.params.slug)
+  },
+  mounted() {
+
   }
 }
 </script>
@@ -60,9 +83,91 @@ export default {
 @import '../style/helpers/_mixins.scss';
 @import '../style/helpers/_responsive.scss';
 @import '../style/helpers/_reset.css';
+@import '../style/helpers/_transitions.scss';
 @import '../style/_variables.scss';
 
 .single {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   color: $black;
+  overflow-y: scroll;
+
+  @include hide-scroll;
+
+  &__content {
+    position: relative;
+    width: 100%;
+    height: auto;
+    min-height: 100%;
+    background: rgba(255, 255, 255, 0.95);
+    padding: $line-height 0 0;
+
+    &__text {
+      width: auto;
+      position: fixed;
+      text-align: center;
+
+      @include center;
+
+      &__title,
+      &__button,
+      &__back {
+        display: block;
+        cursor: pointer;
+      }
+
+      &__button,
+      &__back {
+        color: rgb(194, 194, 194);
+        text-decoration: none;
+      }
+    }
+
+    &__description {
+      position: absolute;
+      width: 100%;
+      text-align: left;
+      top: 0;
+      height: 0;
+      overflow: hidden;
+      transition: all 0.4s ease-out;
+      cursor: pointer;
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: center;
+
+      &__text {
+        text-align: left;
+        max-width: 80ch;
+        padding: $line-height 0;
+      }
+
+      &--active {
+        height: 100%;
+        background: rgba(255, 255, 255, 0.95);
+      }
+    }
+
+    &__images {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: center;
+      align-items: center;
+
+      &__image {
+        margin: 0 $line-height $line-height;
+        width: 360px;
+        height: 360px;
+        object-fit: contain;
+        object-position: 50% 50%;
+      }
+    }
+  }
 }
+
 </style>

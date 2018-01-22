@@ -1,6 +1,7 @@
 <template>
   <div class='app'>
-    <router-view></router-view>
+    <router-view name='a'></router-view>
+    <router-view name='b'></router-view>
   </div>
 </template>
 
@@ -100,7 +101,7 @@ export default {
 
 .app {
   min-height: 100vh;
-  font-family: $sans-serif-stack;
+  font-family: 'Times New Roman';
   font-size: $font-size;
   line-height: $line-height;
   color: $white;

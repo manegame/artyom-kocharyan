@@ -12,7 +12,7 @@
             :src='images[index].image.sizes["pwr-large"]'/>
       <span class="popup__slideshow__close"
             @click='$emit("close")'
-            v-html='"esc"'/>
+            v-html='"back"'/>
     </div>
   </div>
 </template>
@@ -130,7 +130,7 @@ export default {
   top: 0;
   left: 0;
   z-index: 100;
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.95);
 
   &--autoplay {
     cursor: url('../../static/pause@2x.png'), pointer;
@@ -154,7 +154,7 @@ export default {
     background: transparent;
 
     &__close {
-      color: $black;
+      color: rgb(194, 194, 194);
       display: block;
       padding-top: 12px;
       padding-left: $line-height;

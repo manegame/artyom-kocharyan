@@ -12,6 +12,7 @@ import VueYouTubeEmbed from 'vue-youtube-embed'
 import store from './store'
 import akMain from './views/ak-main'
 import akSingle from './views/ak-single'
+import empty from './views/empty'
 
 Vue.use(VueYouTubeEmbed)
 Vue.use(VueRouter)
@@ -23,12 +24,18 @@ const router = new VueRouter({
     {
       path: '/',
       name: 'main',
-      component: akMain
+      components: {
+        a: akMain,
+        b: empty
+      }
     },
     {
       path: '/single/:slug/',
       name: 'single',
-      component: akSingle
+      components: {
+        a: akMain,
+        b: akSingle
+      }
     }
   ],
   scrollBehavior (to, from, savedPosition) {

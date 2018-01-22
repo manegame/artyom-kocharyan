@@ -132,6 +132,7 @@ export default {
 @import '../style/helpers/_mixins.scss';
 @import '../style/helpers/_responsive.scss';
 @import '../style/helpers/_reset.css';
+@import '../style/helpers/_transitions.scss';
 @import '../style/_variables.scss';
 
 .main {
@@ -194,20 +195,5 @@ export default {
     width: $n-3 * $w;
     height: $n-3 * $h;
   }
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: all 1s ease-out;
-}
-
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
-}
-
-.fade-enter-to,
-.fade-leave {
-  opacity: 1;
 }
 </style>
