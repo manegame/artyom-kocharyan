@@ -1,6 +1,7 @@
 <template>
   <transition appear name='fade'>
-    <div class="single">
+    <div class="single"
+         @click.self='router.push({name: "main"})'>
       <div class="single__content">
         <div class="single__content__text">
           <router-link class='single__content__text__back' :to="{ name: 'main' }">back</router-link>

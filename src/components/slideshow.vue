@@ -130,7 +130,7 @@ export default {
   top: 0;
   left: 0;
   z-index: 100;
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 1);
 
   &--autoplay {
     cursor: url('../../static/pause@2x.png'), pointer;
@@ -164,8 +164,9 @@ export default {
     }
 
     &__image {
-      max-width: 90vmin;
-      max-height: 90vh;
+      width: 75vw;
+      height: 75vh;
+      object-fit: contain;
 
       @include center;
     }

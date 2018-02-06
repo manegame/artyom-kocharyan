@@ -12,7 +12,7 @@
                 </div>
                 <img v-else
                     class="scatter__cell__inner__image"
-                    :src='image.image.sizes["pwr-medium"]'/>
+                    :src='image.image.sizes["pwr-small"]'/>
               </div>
   </transition>
 </template>

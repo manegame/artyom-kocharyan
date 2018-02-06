@@ -20,6 +20,7 @@ add_filter('query_vars', function ($vars) {
 add_action('after_setup_theme', 'image_size_setup');
 function image_size_setup()
 {
+    add_image_size('artyom-small', 200);
     add_image_size('pwr-small', 500);
     add_image_size('pwr-medium', 800);
     add_image_size('pwr-large', 1400);
@@ -277,7 +278,7 @@ function my_toolbars($toolbars)
 //     return 'AIzaSyA5-e0tQI0E6nqkbdKr19d9jUx7vlDj4Vg';
 // });
 
-// Allow custom order in REST 
+// Allow custom order in REST
 add_action('admin_init', 'posts_order');
 function posts_order()
 {

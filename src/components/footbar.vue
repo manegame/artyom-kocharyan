@@ -21,7 +21,7 @@ export default {
   bottom: 0;
   width: 100%;
   padding: 0 20px;
-  text-align: right;
+  text-align: left;
   font-family: 'Times New Roman';
   font-size: $font-size;
   line-height: $line-height * 1.5;
