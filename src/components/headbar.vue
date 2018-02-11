@@ -17,7 +17,7 @@
     <router-link class='headbar__item'
                  :class='{"headbar__item--active": $route.name === "svg" || $route.name === "single"}'
                  :to='this.$route.name === "svg" ? { name: "main" } : { name: "svg", params: {component: "annunciationHead", title: "the Annunciation"}}'
-                 v-html='"SVG"' />
+                 v-html='"SVGs"' />
 
     <router-link class='headbar__item'
                 :class='{"headbar__item--active": $route.hash.substring(1) === "images"}'
@@ -26,7 +26,12 @@
                 v-html='main.single.title.rendered' />
 
     <router-link class='headbar__item'
-                v-else-if='$route.name === "svg"'
+                 v-if='$route.name === "single" && main.single.acf.description !== ""'
+                 :to='$route.hash.substring(1) === "description" ? {name: "single"} : { name: "single", hash: "#description" }'
+                 v-html='"description"' />
+
+    <router-link class='headbar__item'
+                v-if='$route.name === "svg"'
                 :to="{ name: 'svg', params: { slug: $route.params.slug }}"
                 v-html='$route.params.title' />
 

@@ -2,14 +2,12 @@
   <div class="single"
        @click.self='router.push({name: "main"})'>
     <div class="single__content dragscroll">
-      <div class="single__content__text">
-        <h1 class="single__content__text__title"
-            v-html='main.single.title.rendered'/>
-        <h1 class="single__content__text__button"
-            v-if='main.single.acf.description !== ""'
-            v-html='"description"'
-            @click='description = !description' />
-      </div>
+      <div class='single__content__description'
+         :class='{"single__content__description--active": $route.hash.substring(1) === "description"}'
+         @click='description = !description'>
+         <p class='single__content__description__text'
+            v-html='main.single.acf.description' />
+       </div>
       <div class='single__content__images'>
         <img class='single__content__images__image'
              v-for='(image, index) in main.single.acf.images'
@@ -17,12 +15,6 @@
              :src='image.image.sizes["pwr-medium"]'
              @click='openSlideshow(index)'/>
       </div>
-      <div class='single__content__description'
-         :class='{"single__content__description--active": description}'
-         @click='description = !description'>
-         <p class='single__content__description__text'
-            v-html='main.single.acf.description' />
-       </div>
     </div>
     <slideshow v-if='$route.hash.substring(1) === "images"'
                :images='main.single.acf.images'
@@ -133,13 +125,12 @@ export default {
     }
 
     &__description {
-      position: absolute;
+      position: relative;
       width: 100%;
       text-align: left;
       top: 0;
       height: 0;
       overflow: hidden;
-      transition: all 0.4s ease-out;
       cursor: pointer;
       display: flex;
       flex-flow: row nowrap;
@@ -152,8 +143,8 @@ export default {
       }
 
       &--active {
-        height: 100%;
-        background: rgba(255, 255, 255, 0.95);
+        height: auto;
+        background: $white;
       }
     }
 
