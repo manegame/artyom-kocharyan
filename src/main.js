@@ -9,6 +9,7 @@ import VueHead from 'vue-head'
 // import RavenVue from 'raven-js/plugins/vue'
 import App from './App'
 import VueYouTubeEmbed from 'vue-youtube-embed'
+import VueCookie from 'vue-cookie'
 import dragscroll from 'dragscroll'
 import store from './store'
 import akMain from './views/ak-main'
@@ -18,6 +19,7 @@ import akSvg from './views/ak-svg'
 
 Vue.use(VueRouter)
 Vue.use(VueHead)
+Vue.use(VueCookie)
 Vue.use(VueYouTubeEmbed)
 Vue.use(dragscroll)
 

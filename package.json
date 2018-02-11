@@ -23,6 +23,7 @@
     "svg-pan-zoom": "^3.5.3",
     "tween.js": "^16.6.0",
     "vue": "^2.5.9",
+    "vue-cookie": "^1.1.4",
     "vue-head": "^2.0.11",
     "vue-resource": "^1.3.4",
     "vue-router": "^2.8.1",

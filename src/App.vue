@@ -40,9 +40,9 @@ export default {
   computed: {
     ...mapState(['main'])
   },
-  watch: {
-    $route(to, from) {
-    }
+  created() {
+    // FOR TESTING
+    document.addEventListener('beforeunload', this.$cookie.delete('been'))
   },
   mounted() {
     this.$_setMetaTags()
