@@ -1,8 +1,6 @@
 <template>
-  <div class="main"
+  <div class="main dragscroll"
        ref='main'>
-    <headbar/>
-    <footbar/>
     <div class="scatter"
          :class='"scatter--zoom_" + zoom'
          ref='scatter'>
@@ -11,23 +9,13 @@
                    :count='index + 1'
                    @scrollTo='scrollTo'/>
     </div>
-    <transition name='fade'>
-      <div class="burial" v-if='$route.hash.substring(1) === "burial"'>
-           <scatterCell :content='video'
-                        :burial='true'
-                        :count='0'
-                        @scrollTo='scrollTo'/>
-      </div>
-    </transition>
   </div>
 </template>
 
 <script>
 import {mapState, mapActions} from 'vuex'
-import TWEEN from 'tween.js'
-import headbar from '../components/headbar'
-import footbar from '../components/footbar'
 import scatterCell from '../components/scatter-cell'
+import TWEEN from 'tween.js'
 
 export default {
   name: 'ak-main',
@@ -45,8 +33,6 @@ export default {
     }
   },
   components: {
-    headbar,
-    footbar,
     scatterCell
   },
   computed: {
@@ -55,7 +41,8 @@ export default {
   methods: {
     ...mapActions([
       'GET_POSTS',
-      'GET_BURIAL'
+      'GET_BURIAL',
+      'GET_VIDEOS'
     ]),
     scrollMiddle() {
       let newLeft = this.$refs.scatter.offsetWidth / 2 - this.wW / 2
@@ -123,6 +110,7 @@ export default {
   mounted() {
     this.GET_POSTS()
     this.GET_BURIAL()
+    this.GET_VIDEOS()
     this.scrollMiddle()
   }
 }
@@ -140,6 +128,8 @@ export default {
   height: 100vh;
   overflow: scroll;
   color: black;
+
+  @include hide-scroll;
 }
 
 .overlay {
@@ -153,19 +143,6 @@ export default {
   text-align: center;
   z-index: 99999;
   pointer-events: none;
-}
-
-.burial {
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
-  top: 0;
-  left: 0;
-  background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAADCAYAAABWKLW/AAAAG0lEQVQYV2M0NjbedfbsWTcGBgYGRhABAygcAIfBBAR7Lj4eAAAAAElFTkSuQmCC") center center repeat rgba(0, 0, 0, 0.9);
-
-  /*
-  background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAMSURBVBhXY2BgYAAAAAQAAVzN/2kAAAAASUVORK5CYII=');
-  */
 }
 
 .scatter {

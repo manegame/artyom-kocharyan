@@ -12,7 +12,7 @@ Vue.http.options.crossOrigin = true
 export default {
   listUser() {
     return new Promise((resolve, reject) => {
-      Vue.http.get('https://www.googleapis.com/youtube/v3/channels?part=contentDetails&forUsername=' + YOUTUBE_USERNAME + '&key=' + YOUTUBE_API_KEY + '').then(
+      Vue.http.get('https://www.googleapis.com/youtube/v3/channels?part=snippet&forUsername=' + YOUTUBE_USERNAME + '&key=' + YOUTUBE_API_KEY + '').then(
         response => {
           resolve(response.body)
         },
@@ -26,7 +26,7 @@ export default {
     return new Promise((resolve, reject) => {
       Vue.http.get('https://www.googleapis.com/youtube/v3/playlistItems?playlistId=' + YOUTUBE_PLAYLIST_ID + '&key=' + YOUTUBE_API_KEY + '&fields=items&part=snippet&maxResults=50').then(
         response => {
-          resolve(response.body)
+          resolve(response.body.items)
         },
         response => {
           reject()

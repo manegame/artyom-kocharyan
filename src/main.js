@@ -9,15 +9,17 @@ import VueHead from 'vue-head'
 // import RavenVue from 'raven-js/plugins/vue'
 import App from './App'
 import VueYouTubeEmbed from 'vue-youtube-embed'
+import dragscroll from 'dragscroll'
 import store from './store'
 import akMain from './views/ak-main'
 import akSingle from './views/ak-single'
-import empty from './views/empty'
-import svgViewer from './components/svg-viewer'
+import akBurial from './views/ak-burial'
+import akSvg from './views/ak-svg'
 
-Vue.use(VueYouTubeEmbed)
 Vue.use(VueRouter)
 Vue.use(VueHead)
+Vue.use(VueYouTubeEmbed)
+Vue.use(dragscroll)
 
 const router = new VueRouter({
   mode: 'history',
@@ -26,24 +28,32 @@ const router = new VueRouter({
       path: '/',
       name: 'main',
       components: {
-        a: akMain,
-        b: empty
+        lower: akMain,
+        upper: false
+      }
+    },
+    {
+      path: '/burial/',
+      name: 'burial',
+      components: {
+        lower: akMain,
+        upper: akBurial
       }
     },
     {
       path: '/single/:slug/',
       name: 'single',
       components: {
-        a: akMain,
-        b: akSingle
+        lower: akMain,
+        upper: akSingle
       }
     },
     {
       path: '/svg/',
       name: 'svg',
       components: {
-        a: svgViewer,
-        b: empty
+        lower: akMain,
+        upper: akSvg
       }
     }
   ],

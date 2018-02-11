@@ -1,12 +1,27 @@
 <template>
   <div class="headbar">
-    <router-link :to="{ name: 'main' }">Artyom Kocharyan</router-link>
+    <router-link class='headbar__item'
+                 :to="{ name: 'main' }"
+                 v-html='"Artyom Kocharyan"' />
+    <router-link class='headbar__item'
+                 :class='{"headbar__item--active": this.$route.name === "burial"}'
+                 :to='this.$route.name === "burial" ? { name: "main" } : { name: "burial" }'
+                 v-html='"Burial Artyomovich"' />
+    <router-link class='headbar__item'
+                 :class='{"headbar__item--active": this.$route.name === "svg"}'
+                 :to='this.$route.name === "svg" ? { name: "main" } : { name: "svg" }'
+                 v-html='"SVG"' />
   </div>
 </template>
 
 <script>
 export default {
-  name: 'headbar'
+  name: 'headbar',
+  methods: {
+    escapeLoading() {
+      window.stop()
+    }
+  }
 }
 </script>
 
@@ -24,7 +39,24 @@ export default {
   text-align: left;
   font-family: 'Times New Roman';
   font-size: $font-size;
-  line-height: $line-height * 1.5;
+  line-height: $line-height;
   cursor: pointer;
+
+  &__item {
+    white-space: nowrap;
+    margin-right: 0.2em;
+
+    &--active {
+      color: transparent;
+      background-image: url('../../static/arrow.png');
+      background-size: cover;
+
+      &:hover {
+        color: transparent;
+        background-image: url('../../static/arrow.png');
+        background-size: cover;
+      }
+    }
+  }
 }
 </style>

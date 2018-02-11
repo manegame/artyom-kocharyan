@@ -1,15 +1,22 @@
 <template>
   <div class='app'>
-    <router-view name='a'></router-view>
-    <router-view name='b'></router-view>
+    <headbar />
+    <router-view name='lower'
+                 class='lower'/>
+    <router-view name='upper'
+                 class='upper'/>
   </div>
 </template>
 
 <script>
 import {mapState, mapActions} from 'vuex'
+import headbar from './components/headbar'
 
 export default {
   name: 'app',
+  components: {
+    headbar
+  },
   data() {
     return {
       meta: {
@@ -99,6 +106,14 @@ export default {
 @import './style/helpers/_responsive.scss';
 @import './style/_variables.scss';
 
+@mixin viewport {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
 .app {
   min-height: 100vh;
   font-family: 'Times New Roman';
@@ -108,6 +123,22 @@ export default {
   background: $white;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  .headbar {
+    z-index: 10;
+  }
+
+  .lower {
+    @include viewport;
+
+    z-index: 8;
+  }
+
+  .upper {
+    @include viewport;
+
+    z-index: 9;
+  }
 }
 
 a {

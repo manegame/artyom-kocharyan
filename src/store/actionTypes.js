@@ -1,3 +1,4 @@
 export const GET_POSTS = 'GET_POSTS'
 export const GET_BURIAL = 'GET_BURIAL'
+export const GET_VIDEOS = 'GET_VIDEOS'
 export const GET_SINGLE_EXHIBITION = 'GET_SINGLE_EXHIBITION'

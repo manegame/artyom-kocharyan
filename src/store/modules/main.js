@@ -6,7 +6,10 @@ import * as mutationTypes from '../mutationTypes'
 const state = {
   posts: [],
   single: [],
-  burial_artyomovich: {}
+  burial: {
+    videos: [],
+    channel: {}
+  }
 }
 
 const actions = {
@@ -16,8 +19,11 @@ const actions = {
   async [actionTypes.GET_SINGLE_EXHIBITION]({commit, state}, slug) {
     commit(mutationTypes.SET_SINGLE_EXHIBITION, await wp.getSingleExhibition(slug))
   },
+  async [actionTypes.GET_VIDEOS]({commit, state}) {
+    commit(mutationTypes.SET_VIDEOS, await yt.listVideos())
+  },
   async [actionTypes.GET_BURIAL]({commit, state}) {
-    commit(mutationTypes.SET_BURIAL, await yt.listVideos())
+    commit(mutationTypes.SET_BURIAL, await yt.listUser())
   }
 }
 
@@ -28,8 +34,11 @@ const mutations = {
   [mutationTypes.SET_SINGLE_EXHIBITION](state, data) {
     state.single = data
   },
+  [mutationTypes.SET_VIDEOS](state, data) {
+    state.burial.videos = data
+  },
   [mutationTypes.SET_BURIAL](state, data) {
-    state.burial_artyomovich = data
+    state.burial.channel = data
   }
 }
 

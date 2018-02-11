@@ -1,23 +1,24 @@
 <template>
-  <div class="svg-viewer">
-    <embed class="svg-viewer__embed"
-           :class='{"svg-viewer__embed--show": show}'
+  <div class="svg">
+    <embed class="svg__embed"
+           :class='{"svg__embed--show": show}'
            type="image/svg+xml"
            :src='svgImage'
            ref='embed'
            @load='initPanZoom'/>
-    <div class="svg-viewer__loading"
+    <div class="svg__loading"
        v-if='!show'>
     </div>
   </div>
 </template>
 
 <script>
+// import annunciationHead from '../assets/svg/annunciation-head.svg'
 import venus from '../assets/svg/venus-spiral.svg'
 import svgPanZoom from 'svg-pan-zoom'
 
 export default {
-  name: 'svg-viewer',
+  name: 'svg',
   data() {
     return {
       show: false
@@ -38,6 +39,10 @@ export default {
         maxZoom: 10000
       })
     }
+  },
+  beforeRouteLeave(to, from, next) {
+    window.stop()
+    next()
   }
 }
 </script>
@@ -49,12 +54,8 @@ export default {
 @import '../style/helpers/_transitions.scss';
 @import '../style/_variables.scss';
 
-.svg-viewer {
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-
-  @include hide-scroll;
+.svg {
+  background: $white;
 
   &__embed {
     width: 100%;
@@ -71,15 +72,14 @@ export default {
     position: fixed;
     top: 50%;
     left: 50%;
-    margin-left: -40px;
-    margin-top: -40px;
-    width: 80px;
-    height: 80px;
-    border: 3px solid rgba(0, 0, 0, 0.3);
-    border-radius: 50%;
-    border-top-color: #fff;
-    animation: spin 1s ease-in-out infinite;
-    -webkit-animation: spin 1s ease-in-out infinite;
+    margin-left: -55px;
+    margin-top: -55px;
+    width: 110px;
+    height: 110px;
+    background-image: url('../../static/loading.png');
+    background-size: contain;
+    animation: spin 1.4s linear infinite;
+    -webkit-animation: spin 1.4s linear infinite;
   }
 
   @keyframes spin {
