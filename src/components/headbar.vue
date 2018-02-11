@@ -1,11 +1,12 @@
 <template>
-  <div class="headbar">
+  <div class="headbar"
+       :class='{"headbar--light": light}'>
     <router-link class='headbar__item'
                  :to="{ name: 'main' }"
                  v-html='"Artyom Kocharyan"' />
     <router-link class='headbar__item'
                  :class='{"headbar__item--active": this.$route.name === "burial"}'
-                 :to='this.$route.name === "burial" ? { name: "main" } : { name: "burial" }'
+                 :to='this.$route.name === "burial" ? { name: "main" } : { name: "burial", params: { video: "enter" } }'
                  v-html='"Burial Artyomovich"' />
     <router-link class='headbar__item'
                  :class='{"headbar__item--active": this.$route.name === "svg"}'
@@ -20,6 +21,11 @@ export default {
   methods: {
     escapeLoading() {
       window.stop()
+    }
+  },
+  computed: {
+    light() {
+      if (this.$route.name === 'burial') return true
     }
   }
 }
@@ -42,7 +48,12 @@ export default {
   line-height: $line-height;
   cursor: pointer;
 
+  &--light {
+    filter: invert(100%);
+  }
+
   &__item {
+    color: $black;
     white-space: nowrap;
     margin-right: 0.2em;
 

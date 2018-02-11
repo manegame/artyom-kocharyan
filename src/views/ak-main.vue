@@ -124,8 +124,6 @@ export default {
 @import '../style/_variables.scss';
 
 .main {
-  width: 100vw;
-  height: 100vh;
   overflow: scroll;
   color: black;
 

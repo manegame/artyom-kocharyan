@@ -19,6 +19,7 @@ export default {
   },
   data() {
     return {
+      been: false,
       meta: {
         sitename: 'Artyom Kocharyan',
         facebook: 'xxxxxxxxx',
@@ -41,11 +42,17 @@ export default {
     ...mapState(['main'])
   },
   created() {
-    // FOR TESTING
-    document.addEventListener('beforeunload', this.$cookie.delete('been'))
+    if (!this.been) {
+      console.log('never been here before')
+      this.$cookie.set('been', true, 7)
+    } else {
+      console.log('been here before')
+    }
+    document.addEventListener('unload', this.$cookie.delete('been'))
   },
   mounted() {
     this.$_setMetaTags()
+    this.been = this.$cookie.set('been', true, 7)
   },
   methods: {
     ...mapActions(['GET_POSTS']),
@@ -138,16 +145,6 @@ export default {
     @include viewport;
 
     z-index: 9;
-  }
-}
-
-a {
-  color: black;
-
-  &:visited,
-  &:hover,
-  &:active {
-    color: black;
   }
 }
 </style>

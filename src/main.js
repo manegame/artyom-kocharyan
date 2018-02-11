@@ -35,7 +35,7 @@ const router = new VueRouter({
       }
     },
     {
-      path: '/burial/',
+      path: '/burial/:video',
       name: 'burial',
       components: {
         lower: akMain,

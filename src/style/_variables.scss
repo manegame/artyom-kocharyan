@@ -13,6 +13,7 @@ $item-l: 100px;
 $circle-full: 70vmin;
 $item-full: 20vmax;
 $border-width: 1px;
+$top-bar-height: $line-height * 2;
 /* Breakpoints */
 $breakpoints: (
   'small': (max-width: 900px),
