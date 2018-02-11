@@ -1,4 +1,5 @@
-import api from '../../service/wp'
+import wp from '../../service/wp'
+import yt from '../../service/youtube'
 import * as actionTypes from '../actionTypes'
 import * as mutationTypes from '../mutationTypes'
 
@@ -10,13 +11,13 @@ const state = {
 
 const actions = {
   async [actionTypes.GET_POSTS]({commit, state}) {
-    commit(mutationTypes.SET_POSTS, await api.getPosts())
+    commit(mutationTypes.SET_POSTS, await wp.getPosts())
   },
   async [actionTypes.GET_SINGLE_EXHIBITION]({commit, state}, slug) {
-    commit(mutationTypes.SET_SINGLE_EXHIBITION, await api.getSingleExhibition(slug))
+    commit(mutationTypes.SET_SINGLE_EXHIBITION, await wp.getSingleExhibition(slug))
   },
   async [actionTypes.GET_BURIAL]({commit, state}) {
-    commit(mutationTypes.SET_BURIAL, await api.getBurial())
+    commit(mutationTypes.SET_BURIAL, await yt.listVideos())
   }
 }
 
