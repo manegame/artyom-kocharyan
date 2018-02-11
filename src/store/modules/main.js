@@ -6,6 +6,7 @@ import * as mutationTypes from '../mutationTypes'
 const state = {
   posts: [],
   single: [],
+  svg: [],
   burial: {
     videos: [],
     channel: {}
@@ -19,11 +20,17 @@ const actions = {
   async [actionTypes.GET_SINGLE_EXHIBITION]({commit, state}, slug) {
     commit(mutationTypes.SET_SINGLE_EXHIBITION, await wp.getSingleExhibition(slug))
   },
+  async [actionTypes.GET_SVGS]({commit, state}) {
+    commit(mutationTypes.SET_SVGS, await wp.getSVGs())
+  },
   async [actionTypes.GET_VIDEOS]({commit, state}) {
     commit(mutationTypes.SET_VIDEOS, await yt.listVideos())
   },
   async [actionTypes.GET_BURIAL]({commit, state}) {
     commit(mutationTypes.SET_BURIAL, await yt.listUser())
+  },
+  async [actionTypes.CLEAR_SINGLE_EXHIBITION]({commit, state}) {
+    commit(mutationTypes.CLEAR_SINGLE_EXHIBITION)
   }
 }
 
@@ -34,11 +41,17 @@ const mutations = {
   [mutationTypes.SET_SINGLE_EXHIBITION](state, data) {
     state.single = data
   },
+  [mutationTypes.SET_SVGS](state, data) {
+    state.svg = data.acf.svgs
+  },
   [mutationTypes.SET_VIDEOS](state, data) {
     state.burial.videos = data
   },
   [mutationTypes.SET_BURIAL](state, data) {
     state.burial.channel = data
+  },
+  [mutationTypes.CLEAR_SINGLE_EXHIBITION](state, data) {
+    state.single = []
   }
 }
 

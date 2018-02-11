@@ -50,8 +50,16 @@ const router = new VueRouter({
         upper: akSingle
       }
     },
+    // {
+    //   path: '/svg/',
+    //   name: 'svg',
+    //   components: {
+    //     lower: akMain,
+    //     upper: akSvg
+    //   }
+    // }
     {
-      path: '/svg/',
+      path: '/svg/:component',
       name: 'svg',
       components: {
         lower: akMain,

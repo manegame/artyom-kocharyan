@@ -1,18 +1,18 @@
 <template>
-  <div class='popup' @touchmove.stop.prevent
-                    :class='{
-                      "popup--single": !left,
-                      "popup--left": !autoplay && left,
-                      "popup--right": !autoplay && !left,
-                      "popup--autoplay": autoplay,
-                      "popup--autoplay--paused": autoplay && paused}'>
-    <div    class="popup__slideshow"
-            @click='navigation'>
-      <img  class="popup__slideshow__image"
-            :src='images[index].image.sizes["pwr-large"]'/>
+  <div class='popup'
+       @touchmove.stop.prevent
+       :class='{
+         "popup--single": !left,
+         "popup--left": !autoplay && left,
+         "popup--right": !autoplay && !left,
+         "popup--autoplay": autoplay,
+         "popup--autoplay--paused": autoplay && paused}'>
+      <div class="popup__slideshow"
+           @click='navigation'>
+      <img class="popup__slideshow__image"
+           :src='images[index].image.sizes["pwr-large"]'/>
       <span class="popup__slideshow__close"
-            @click='$emit("close")'
-            v-html='"back"'/>
+            @click='$emit("close")' />
     </div>
   </div>
 </template>

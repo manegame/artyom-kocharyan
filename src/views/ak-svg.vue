@@ -13,34 +13,45 @@
 </template>
 
 <script>
-// import annunciationHead from '../assets/svg/annunciation-head.svg'
+import {mapState, mapActions} from 'vuex'
 import venus from '../assets/svg/venus-spiral.svg'
+import annunciationHead from '../assets/svg/annunciation-head.svg'
 import svgPanZoom from 'svg-pan-zoom'
 
 export default {
   name: 'svg',
   data() {
     return {
-      show: false
+      show: false,
+      svgIndex: 0
     }
   },
   computed: {
+    ...mapState(['main']),
     svgImage() {
-      return venus
+      if (this.$route.params.component === 'venus') return venus
+      if (this.$route.params.component === 'annunciationHead') return annunciationHead
     }
   },
   methods: {
+    ...mapActions(['GET_SVGS']),
     initPanZoom() {
       this.show = true
       console.log('trying to initialize')
       svgPanZoom(this.$refs.embed, {
         zoomScaleSensitivity: 0.3,
         contain: true,
-        maxZoom: 10000
+        maxZoom: 10000,
+        minZoom: 0.01
       })
     }
   },
-  beforeRouteLeave(to, from, next) {
+  mounted() {
+    this.GET_SVGS()
+  },
+  beforeRouteUpdate(to, from, next) {
+    console.log('going away')
+    this.show = false
     window.stop()
     next()
   }

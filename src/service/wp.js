@@ -32,9 +32,9 @@ export default {
       )
     })
   },
-  getBurial() {
+  getSVGs() {
     return new Promise((resolve, reject) => {
-      Vue.http.get(API_ROOT + 'pages?slug="burial-artyomovich"&fields=title,slug,acf').then(
+      Vue.http.get(API_ROOT + 'pages?slug="svg"&fields=title,slug,acf').then(
         response => {
           resolve(response.body[0])
         },

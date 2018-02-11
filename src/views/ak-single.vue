@@ -1,39 +1,36 @@
 <template>
-  <transition appear name='fade'>
-    <div class="single"
-         @click.self='router.push({name: "main"})'>
-      <div class="single__content">
-        <div class="single__content__text">
-          <router-link class='single__content__text__back' :to="{ name: 'main' }">back</router-link>
-          <h1 class="single__content__text__title"
-              v-html='main.single.title.rendered'/>
-          <h1 class="single__content__text__button"
-              v-if='main.single.acf.description !== ""'
-              v-html='"description"'
-              @click='description = !description' />
-        </div>
-        <div class='single__content__images'>
-          <img class='single__content__images__image'
-               v-for='(image, index) in main.single.acf.images'
-               v-if='image.image'
-               :src='image.image.sizes["pwr-medium"]'
-               @click='openSlideshow(index)'/>
-        </div>
-        <div class='single__content__description'
-           :class='{"single__content__description--active": description}'
-           @click='description = !description'>
-           <p class='single__content__description__text'
-              v-html='main.single.acf.description' />
-         </div>
+  <div class="single"
+       @click.self='router.push({name: "main"})'>
+    <div class="single__content dragscroll">
+      <div class="single__content__text">
+        <h1 class="single__content__text__title"
+            v-html='main.single.title.rendered'/>
+        <h1 class="single__content__text__button"
+            v-if='main.single.acf.description !== ""'
+            v-html='"description"'
+            @click='description = !description' />
       </div>
-      <slideshow v-if='$route.hash.substring(1) === "images"'
-                 :images='main.single.acf.images'
-                 :slideshow='main.single.acf.slideshow'
-                 :count='this.index'
-                 @open='openSlideshow'
-                 @close='removeHash'/>
+      <div class='single__content__images'>
+        <img class='single__content__images__image'
+             v-for='(image, index) in main.single.acf.images'
+             v-if='image.image'
+             :src='image.image.sizes["pwr-medium"]'
+             @click='openSlideshow(index)'/>
+      </div>
+      <div class='single__content__description'
+         :class='{"single__content__description--active": description}'
+         @click='description = !description'>
+         <p class='single__content__description__text'
+            v-html='main.single.acf.description' />
+       </div>
     </div>
-  </transition>
+    <slideshow v-if='$route.hash.substring(1) === "images"'
+               :images='main.single.acf.images'
+               :slideshow='main.single.acf.slideshow'
+               :count='this.index'
+               @open='openSlideshow'
+               @close='removeHash'/>
+  </div>
 </template>
 
 <script>
@@ -55,7 +52,10 @@ export default {
     ...mapState(['main'])
   },
   methods: {
-    ...mapActions(['GET_SINGLE_EXHIBITION']),
+    ...mapActions([
+      'GET_SINGLE_EXHIBITION',
+      'CLEAR_SINGLE_EXHIBITION'
+    ]),
     openSlideshow() {
       this.$router.push({
         name: 'single',
@@ -74,8 +74,13 @@ export default {
   beforeMount() {
     this.GET_SINGLE_EXHIBITION(this.$route.params.slug)
   },
+  beforeDestroy() {
+    this.CLEAR_SINGLE_EXHIBITION()
+  },
   mounted() {
-
+    if (this.main.single.acf.only_slideshow) {
+      this.openSlideshow()
+    }
   }
 }
 </script>
@@ -95,6 +100,7 @@ export default {
   height: 100vh;
   color: $black;
   overflow-y: scroll;
+  background: $white;
 
   @include hide-scroll;
 
@@ -103,7 +109,6 @@ export default {
     width: 100%;
     height: auto;
     min-height: 100%;
-    background: rgba(255, 255, 255, 0.95);
     padding: $line-height 0 0;
 
     &__text {
