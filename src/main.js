@@ -13,6 +13,7 @@ import store from './store'
 import akMain from './views/ak-main'
 import akSingle from './views/ak-single'
 import empty from './views/empty'
+import svgViewer from './components/svg-viewer'
 
 Vue.use(VueYouTubeEmbed)
 Vue.use(VueRouter)
@@ -35,6 +36,14 @@ const router = new VueRouter({
       components: {
         a: akMain,
         b: akSingle
+      }
+    },
+    {
+      path: '/svg/',
+      name: 'svg',
+      components: {
+        a: svgViewer,
+        b: empty
       }
     }
   ],

@@ -19,6 +19,7 @@
     "prismic-javascript": "^1.4.1",
     "raven-js": "^3.20.1",
     "reframe.js": "^2.1.14",
+    "svg-pan-zoom": "^3.5.3",
     "tween.js": "^16.6.0",
     "vue": "^2.5.9",
     "vue-head": "^2.0.11",

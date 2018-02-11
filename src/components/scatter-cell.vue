@@ -1,4 +1,4 @@
-<template>
+]<template>
   <div class="scatter__cell"
        :class='"scatter__cell--" + count'
        @click.self='removeHash'>
