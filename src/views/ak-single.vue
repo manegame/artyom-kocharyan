@@ -10,9 +10,11 @@
        </div>
       <div class='single__content__images'>
         <img class='single__content__images__image'
+             :class='"single__content__images__image--" + Math.ceil(Math.random() * 4) + ""'
              v-for='(image, index) in main.single.acf.images'
              v-if='image.image'
              :src='image.image.sizes["pwr-medium"]'
+             :key='image.image.id'
              @click='openSlideshow(index)'/>
       </div>
     </div>
@@ -85,14 +87,8 @@ export default {
 @import '../style/_variables.scss';
 
 .single {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  color: $black;
-  overflow-y: scroll;
   background: $white;
+  overflow-y: scroll;
 
   @include hide-scroll;
 
@@ -101,7 +97,7 @@ export default {
     width: 100%;
     height: auto;
     min-height: 100%;
-    padding: $line-height 0 0;
+    padding: $top-bar-height 0 0;
 
     &__text {
       width: auto;
@@ -109,19 +105,6 @@ export default {
       text-align: center;
 
       @include center;
-
-      &__title,
-      &__button,
-      &__back {
-        display: block;
-        cursor: pointer;
-      }
-
-      &__button,
-      &__back {
-        color: rgb(194, 194, 194);
-        text-decoration: none;
-      }
     }
 
     &__description {
@@ -150,18 +133,39 @@ export default {
 
     &__images {
       width: 100%;
-      height: 100%;
+      padding: 0 120px;
       display: flex;
       flex-flow: row wrap;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
 
+      &::after {
+        content: '';
+        flex: auto;
+      }
+
       &__image {
-        margin: 0 $line-height $line-height;
-        width: 360px;
-        height: 360px;
+        margin: 0 $line-height;
+        width: 300px;
+        height: 300px;
         object-fit: contain;
-        object-position: 50% 50%;
+        object-position: 0 50%;
+
+        &--1 {
+          padding-left: 20px;
+        }
+
+        &--2 {
+          padding-right: 20px;
+        }
+
+        &--3 {
+          padding-top: 20px;
+        }
+
+        &--4 {
+          padding-bottom: 20px;
+        }
       }
     }
   }

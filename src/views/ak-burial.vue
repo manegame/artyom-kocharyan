@@ -39,7 +39,7 @@ export default {
   data() {
     return {
       options: {
-        first: 'autoplay=1&modestbranding=1'
+        first: 'autoplay=1&modestbranding=1&rel=0'
       }
     }
   },
@@ -84,7 +84,7 @@ export default {
   @include hide-scroll;
 
   &__first {
-    margin: $top-bar-height / 2 auto 0;
+    margin: $top-bar-height auto $line-height;
     width: 100vw;
     background: $black;
 
@@ -96,14 +96,19 @@ export default {
 
   &__list {
     width: 100vw;
+    height: $top-bar-height * 2;
     display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-items: flex-start;
     overflow-x: scroll;
 
     @include hide-scroll;
 
     &__item {
+      height: 100%;
       display: inline-block;
-      margin: 10px;
+      margin: 0 10px;
     }
   }
 
