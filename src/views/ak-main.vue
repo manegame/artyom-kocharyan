@@ -7,6 +7,16 @@
       <scatterCell v-for='(post, index) in main.posts'
                    :content='post'
                    :count='index + 1'
+                   :type='"images"'
+                   @scrollTo='scrollTo'/>
+      <scatterCell :content='main.svg'
+                   :count='main.svg.length + 1'
+                   :type='"svg"'
+                   @scrollTo='scrollTo'/>
+      <scatterCell v-for='(post, index) in main.burial_artyomovich'
+                   :content='post'
+                   :count='index + 1'
+                   :type='"burial"'
                    @scrollTo='scrollTo'/>
     </div>
   </div>
@@ -41,6 +51,7 @@ export default {
   methods: {
     ...mapActions([
       'GET_POSTS',
+      'GET_SVGS',
       'GET_BURIAL',
       'GET_VIDEOS'
     ]),
@@ -110,6 +121,7 @@ export default {
   mounted() {
     this.GET_POSTS()
     this.GET_BURIAL()
+    this.GET_SVGS()
     this.GET_VIDEOS()
     this.scrollMiddle()
   }

@@ -2,17 +2,20 @@
   <transition appear
               name='fade'>
               <div class="scatter__cell__inner"
-                   :class='{"scatter__cell__inner--large": burial}'
+                   :class='{"scatter__cell__inner--large": this.type === "burial"}'
                    :style='{
                       transform: "rotate(" + randomRotation + "deg) translate(" + animatedTranslation + "px) rotate(-" + randomRotation + "deg)"
                      }'>
                 <div class="scatter__cell__inner__video"
-                     v-if='burial'>
+                     v-if='type === "burial"'>
                   <akYoutubeEmbed :video='video'/>
                 </div>
-                <img v-else
+                <img v-if='type === "images"'
                     class="scatter__cell__inner__image"
                     :src='image.image.sizes["pwr-small"]'/>
+                <img v-if='type === "svg"'
+                    class="scatter__cell__inner__image"
+                    :src='image'/>
               </div>
   </transition>
 </template>
@@ -33,12 +36,12 @@ export default {
     }
   },
   props: {
-    burial: {
-      type: Boolean,
-      required: false
+    type: {
+      type: String,
+      required: true
     },
     image: {
-      type: Object,
+      type: [Object, String],
       required: false
     },
     video: {
@@ -48,7 +51,7 @@ export default {
   },
   methods: {
     randomTranslation() {
-      if (this.burial) return Math.floor(Math.random() * 400)
+      if (this.type === 'burial') return Math.floor(Math.random() * 400)
       else return Math.floor(Math.random() * 120)
     }
   },

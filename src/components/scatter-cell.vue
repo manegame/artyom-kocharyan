@@ -2,17 +2,25 @@
   <div class="scatter__cell"
        :class='"scatter__cell--" + count'
        @click.self='removeHash'>
-       <template v-if='burial'>
+       <template v-if='type === "burial"'>
          <piece v-for='(video, index) in main.burial_artyomovich.acf.burial_artyomovich'
                 v-if='video.front'
                 :video='video.video'
-                :burial='burial'/>
+                :type='type'/>
        </template>
-       <template v-else>
+       <template v-if='type === "svg"'>
+         <router-link :to='{ name: "svg", params: {component: "annunciationHead"}}'>
+               <piece v-for='item in content'
+                      :image='item.preview.sizes["artyom-small"]'
+                      :type='type'/>
+          </router-link>
+       </template>
+       <template v-if='type === "images"'>
          <router-link :to="{ name: 'single', params: { slug: content.slug } }">
            <piece v-for='(image, index) in content.acf.images'
                   v-if='image.image'
-                  :image='image'/>
+                  :image='image'
+                  :type='type'/>
           </router-link>
         </template>
   </div>
@@ -41,9 +49,9 @@ export default {
       type: Number,
       required: true
     },
-    burial: {
-      type: Boolean,
-      required: false
+    type: {
+      type: String,
+      required: true
     }
   },
   computed: {
@@ -74,15 +82,6 @@ export default {
     animate(event) {
       event.target.offsetTop += 100
       console.log(event.target.offsetTop)
-    },
-    removeHash() {
-      if (this.burial) {
-        this.$router.push({
-          name: 'main',
-          hash: '',
-          params: {slug: this.$route.params.slug}
-        })
-      }
     }
   }
 }
