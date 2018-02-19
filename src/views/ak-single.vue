@@ -1,7 +1,8 @@
 <template>
   <div class="single"
        @click.self='router.push({name: "main"})'>
-    <div class="single__content dragscroll">
+    <div class="single__content dragscroll"
+         :class='{"single__content--collapse": $route.hash.substring(1) === "description"}'>
       <div class='single__content__description'
          :class='{"single__content__description--active": $route.hash.substring(1) === "description"}'
          @click='description = !description'>
@@ -88,16 +89,24 @@ export default {
 
 .single {
   background: $white;
-  overflow-y: scroll;
+  height: 100%;
+  overflow: hidden;
 
   @include hide-scroll;
 
   &__content {
-    position: relative;
+    position: absolute;
     width: 100%;
-    height: auto;
-    min-height: 100%;
+    right: 0;
+    height: 100%;
+    overflow: scroll;
     padding: $top-bar-height 0 0;
+    transition: width 0.3s ease-out;
+
+    &--collapse {
+      width: calc(100% + 500px);
+      right: -500px;
+    }
 
     &__text {
       width: auto;
