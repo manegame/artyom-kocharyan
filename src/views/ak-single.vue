@@ -108,26 +108,24 @@ export default {
     }
 
     &__description {
-      position: relative;
-      width: 100%;
-      text-align: left;
+      position: absolute;
+      width: 500px;
+      height: 100vh;
       top: 0;
-      height: 0;
-      overflow: hidden;
-      cursor: pointer;
-      display: flex;
-      flex-flow: row nowrap;
-      justify-content: center;
+      left: -500px;
+      background: $black;
+      overflow: scroll;
+      transition: left 0.3s ease-out;
 
       &__text {
         text-align: left;
         max-width: 80ch;
-        padding: $line-height 0;
+        padding: $line-height 40px;
       }
 
       &--active {
+        left: 0;
         height: auto;
-        background: $white;
       }
     }
 
