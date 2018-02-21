@@ -1,26 +1,24 @@
 <template>
   <div class="main dragscroll"
+       :class='{"main--zoom": $route.name === "single"}'
        ref='main'>
-    <div class="scatter"
-         :class='"scatter--zoom_" + zoom'
-         ref='scatter'>
-         <scatterCell :content='dev'
-                      :count='1'
-                      :type='"dev"'/>
-      <!-- <scatterCell v-for='(post, index) in main.posts'
+<div class="scatter"
+     ref='scatter'>
+      <scatterCell v-for='(post, index) in main.posts'
                    :content='post'
                    :count='index + 1'
                    :type='"images"'
-                   @scrollTo='scrollTo'/>
+                   @scrollto='scrollTo'
+                   @click='updateScroll($event)'/>
       <scatterCell :content='main.svg'
                    :count='main.svg.length + 1'
                    :type='"svg"'
-                   @scrollTo='scrollTo'/>
-      <scatterCell v-for='(post, index) in main.burial_artyomovich'
+                   @scrollto='scrollTo'/>
+      <!-- <scatterCell v-for='(post, index) in main.burial_artyomovich'
                    :content='post'
                    :count='index + 1'
                    :type='"burial"'
-                   @scrollTo='scrollTo'/> -->
+                   @scrollto='scrollTo' /> -->
     </div>
   </div>
 </template>
@@ -34,7 +32,6 @@ export default {
   name: 'ak-main',
   data() {
     return {
-      dev: ['http://www.clker.com/cliparts/c/2/4/3/1194986855125869974rubik_s_cube_random_petr_01.svg.med.png', 'http://www.clker.com/cliparts/c/2/4/3/1194986855125869974rubik_s_cube_random_petr_01.svg.med.png', 'http://www.clker.com/cliparts/c/2/4/3/1194986855125869974rubik_s_cube_random_petr_01.svg.med.png', 'http://www.clker.com/cliparts/c/2/4/3/1194986855125869974rubik_s_cube_random_petr_01.svg.med.png'],
       zoom: 2,
       wW: window.innerWidth,
       wH: window.innerHeight,
@@ -66,11 +63,13 @@ export default {
       this.$refs.main.scrollTop = newTop
     },
     scrollTo(dimensions) {
-      let newLeft = dimensions.x + (dimensions.w / 2) - (this.wW / 2)
-      let newTop = dimensions.y + (dimensions.h / 2) - (this.wH / 2)
-      this.scroll = {
-        top: newTop,
-        left: newLeft
+      if (this.$route.name === 'main') {
+        let newLeft = dimensions.x + (dimensions.w / 2) - (this.wW / 2)
+        let newTop = dimensions.y + (dimensions.h / 2) - (this.wH / 2)
+        this.scroll = {
+          top: newTop,
+          left: newLeft
+        }
       }
     },
     setWindow() {
@@ -123,10 +122,10 @@ export default {
     }
   },
   mounted() {
-    // this.GET_POSTS()
-    // this.GET_BURIAL()
-    // this.GET_SVGS()
-    // this.GET_VIDEOS()
+    this.GET_POSTS()
+    this.GET_BURIAL()
+    this.GET_SVGS()
+    this.GET_VIDEOS()
     this.scrollMiddle()
   }
 }
@@ -142,6 +141,14 @@ export default {
 .main {
   overflow: scroll;
   color: black;
+  transform: scale(1);
+  -webkit-transform: scale(1);
+  transition: transform 1s ease-out;
+
+  &--zoom {
+    transform: scale(2.5);
+    -webkit-transform: scale(2.5);
+  }
 
   @include hide-scroll;
 }
@@ -171,20 +178,7 @@ export default {
   grid-template-columns: repeat(5, 1fr);
   grid-gap: 2vh 0;
   grid-template-rows: repeat(10, 1fr);
-
-  &--zoom_1 {
-    width: $n-1 * $w;
-    height: $n-1 * $h;
-  }
-
-  &--zoom_2 {
-    width: $n-2 * $w;
-    height: $n-2 * $h;
-  }
-
-  &--zoom_3 {
-    width: $n-3 * $w;
-    height: $n-3 * $h;
-  }
+  width: $n-2 * $w;
+  height: $n-2 * $h;
 }
 </style>

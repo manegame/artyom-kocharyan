@@ -1,26 +1,22 @@
 <template>
-  <transition appear
-              name='fade'>
-              <div class="scatter__cell__inner"
-                   :class='{"scatter__cell__inner--large": $route.name === "single"}'
-                   :style='{
-                      transform: "rotate(" + randomRotation + "deg) translate(" + animatedTranslation + "px) rotate(-" + randomRotation + "deg)"
-                     }'>
-                <!-- <div class="scatter__cell__inner__video"
-                     v-if='type === "burial"'>
-                  <akYoutubeEmbed :video='video'/>
-                </div>
-                <img v-if='type === "images"'
-                    class="scatter__cell__inner__image"
-                    :src='image.image.sizes["pwr-small"]'/>
-                <img v-if='type === "svg"'
-                    class="scatter__cell__inner__image"
-                    :src='image'/> -->
-                <img v-if='type === "dev"'
-                    class="scatter__cell__inner__image"
-                    :src='image'/>
-              </div>
-  </transition>
+  <div class="scatter__cell__inner"
+       :style='{
+          transform: "rotate(" + randomRotation + "deg) translate(" + animatedTranslation + "px) rotate(-" + randomRotation + "deg)"
+         }'>
+    <!-- burial -->
+    <div class="scatter__cell__inner__video"
+         v-if='type === "burial"'>
+      <akYoutubeEmbed :video='video'/>
+    </div>
+    <!-- images -->
+    <img v-if='type === "images"'
+        class="scatter__cell__inner__image"
+        :src='image.image.sizes["artyom-small"]'/>
+    <!-- svg -->
+    <img v-if='type === "svg"'
+        class="scatter__cell__inner__image"
+        :src='image'/>
+  </div>
 </template>
 
 <script>
@@ -65,7 +61,7 @@ export default {
   watch: {
     $route(to, from) {
       if (to.name === 'single') {
-        this.translation = this.randomTranslation(300, 400)
+        // this.translation = this.randomTranslation(300, 400)
       }
       if (to.name === 'akMain') {
         this.translation = this.randomTranslation(20, 120)

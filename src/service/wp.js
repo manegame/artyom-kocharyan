@@ -10,7 +10,7 @@ Vue.http.options.crossOrigin = true
 export default {
   getPosts() {
     return new Promise((resolve, reject) => {
-      Vue.http.get(API_ROOT + 'posts?per_page=90').then(
+      Vue.http.get(API_ROOT + 'posts?per_page=99').then(
         response => {
           resolve(response.body)
         },
@@ -24,7 +24,7 @@ export default {
     return new Promise((resolve, reject) => {
       Vue.http.get(API_ROOT + 'posts?slug=' + slug + '&fields=title,slug,acf').then(
         response => {
-          resolve(response.body[0])
+          resolve(response.body)
         },
         response => {
           reject()

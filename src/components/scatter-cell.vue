@@ -1,15 +1,15 @@
 ]<template>
-  <!-- <div class="scatter__cell"
+  <div class="scatter__cell"
        :class='"scatter__cell--" + count'
-       @click.self='removeHash'> -->
-
-       <!--
+       @click.self='removeHash'>
+       <!-- Burial -->
        <template v-if='type === "burial"'>
          <piece v-for='(video, index) in main.burial_artyomovich.acf.burial_artyomovich'
                 v-if='video.front'
                 :video='video.video'
                 :type='type'/>
        </template>
+       <!-- svg -->
        <template v-if='type === "svg"'>
          <router-link :to='{ name: "svg", params: {component: "annunciationHead"}}'>
                <piece v-for='item in content'
@@ -17,6 +17,7 @@
                       :type='type'/>
           </router-link>
        </template>
+       <!-- Images -->
        <template v-if='type === "images"'>
          <router-link :to="{ name: 'single', params: { slug: content.slug } }">
            <piece v-for='(image, index) in content.acf.images'
@@ -24,18 +25,7 @@
                   :image='image'
                   :type='type'/>
           </router-link>
-        </template> -->
-  <!-- </div> -->
-  <div class="scatter__cell--1"
-       :class='{"scatter__cell--1--single": $route.name === "single"}'
-       @click.self='removeHash'>
-    <template v-if='type === "dev"'>
-      <router-link :to="{ name: 'single', params: { slug: 'xxxxx' } }">
-        <piece v-for='item in content'
-               :image='item'
-               :type='type'/>
-       </router-link>
-    </template>
+        </template>
   </div>
 </template>
 
@@ -55,7 +45,7 @@ export default {
   },
   props: {
     content: {
-      type: Object,
+      type: [Object, Array],
       required: true
     },
     count: {
@@ -105,29 +95,11 @@ export default {
 @import '../style/helpers/_responsive.scss';
 @import '../style/_variables.scss';
 
-/* ANIMATIONS */
-
-@keyframes float {
-  0% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-3px);
-  }
-
-  100% {
-    transform: translateY(0);
-  }
-}
-
 .scatter__cell {
   width: 100%;
   height: 100%;
   cursor: pointer;
   position: relative;
-  border-radius: 50%;
-  transition: all 3s ease-out;
 
   &--0 {
     grid-area: 1 / 1 / 9 / 9;
@@ -136,13 +108,6 @@ export default {
   &--1 {
     grid-column: 3 / 4;
     grid-row: 5 / 7;
-    background: blue;
-
-    &--single {
-      grid-column: 1 / 5;
-      grid-row: 2 / 6;
-      background: red;
-    }
   }
 
   &--2 {

@@ -1,8 +1,9 @@
 <template>
   <div class='app'>
-    <headbar />
+    <!-- <headbar /> -->
     <router-view name='lower'
                  class='lower'/>
+
     <router-view name='upper'
                  class='upper'/>
   </div>

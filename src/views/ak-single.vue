@@ -9,15 +9,6 @@
          <p class='single__content__description__text'
             v-html='main.single.acf.description' />
        </div>
-      <div class='single__content__images'>
-        <img class='single__content__images__image'
-             :class='"single__content__images__image--" + Math.ceil(Math.random() * 4) + ""'
-             v-for='(image, index) in main.single.acf.images'
-             v-if='image.image'
-             :src='image.image.sizes["pwr-medium"]'
-             :key='image.image.id'
-             @click='openSlideshow(index)'/>
-      </div>
     </div>
 
     <slideshow v-if='$route.hash.substring(1) === "images"'
@@ -89,7 +80,8 @@ export default {
 @import '../style/_variables.scss';
 
 .single {
-  background: $white;
+  background: transparent;
+  pointer-events: none;
   height: 100%;
   overflow: hidden;
 
