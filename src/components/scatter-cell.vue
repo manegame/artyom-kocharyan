@@ -1,7 +1,7 @@
 ]<template>
   <div class="scatter__cell"
        :class='"scatter__cell--" + count'
-       @click.self='removeHash'>
+       @click.self='scrollTo($event)'>
        <!-- Burial -->
        <template v-if='type === "burial"'>
          <piece v-for='(video, index) in main.burial_artyomovich.acf.burial_artyomovich'
@@ -75,7 +75,7 @@ export default {
       if (direction === 'y') return randY
     },
     scrollTo(event) {
-      this.$emit('scrollTo', {
+      this.$emit('scroll-to', {
         w: event.target.offsetWidth,
         h: event.target.offsetHeight,
         x: event.target.offsetLeft,

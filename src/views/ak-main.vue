@@ -8,12 +8,11 @@
                    :content='post'
                    :count='index + 1'
                    :type='"images"'
-                   @scrollto='scrollTo'
-                   @click='updateScroll($event)'/>
+                   @scroll-to='scrollTo' />
       <scatterCell :content='main.svg'
                    :count='main.svg.length + 1'
                    :type='"svg"'
-                   @scrollto='scrollTo'/>
+                   @scroll-to='scrollTo'/>
       <!-- <scatterCell v-for='(post, index) in main.burial_artyomovich'
                    :content='post'
                    :count='index + 1'
