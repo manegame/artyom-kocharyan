@@ -19,6 +19,7 @@
              @click='openSlideshow(index)'/>
       </div>
     </div>
+
     <slideshow v-if='$route.hash.substring(1) === "images"'
                :images='main.single.acf.images'
                :slideshow='main.single.acf.slideshow'

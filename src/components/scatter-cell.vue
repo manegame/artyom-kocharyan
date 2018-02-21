@@ -1,7 +1,9 @@
 ]<template>
-  <div class="scatter__cell"
+  <!-- <div class="scatter__cell"
        :class='"scatter__cell--" + count'
-       @click.self='removeHash'>
+       @click.self='removeHash'> -->
+
+       <!--
        <template v-if='type === "burial"'>
          <piece v-for='(video, index) in main.burial_artyomovich.acf.burial_artyomovich'
                 v-if='video.front'
@@ -22,7 +24,18 @@
                   :image='image'
                   :type='type'/>
           </router-link>
-        </template>
+        </template> -->
+  <!-- </div> -->
+  <div class="scatter__cell--1"
+       :class='{"scatter__cell--1--single": $route.name === "single"}'
+       @click.self='removeHash'>
+    <template v-if='type === "dev"'>
+      <router-link :to="{ name: 'single', params: { slug: 'xxxxx' } }">
+        <piece v-for='item in content'
+               :image='item'
+               :type='type'/>
+       </router-link>
+    </template>
   </div>
 </template>
 
@@ -114,6 +127,7 @@ export default {
   cursor: pointer;
   position: relative;
   border-radius: 50%;
+  transition: all 3s ease-out;
 
   &--0 {
     grid-area: 1 / 1 / 9 / 9;
@@ -122,6 +136,13 @@ export default {
   &--1 {
     grid-column: 3 / 4;
     grid-row: 5 / 7;
+    background: blue;
+
+    &--single {
+      grid-column: 1 / 5;
+      grid-row: 2 / 6;
+      background: red;
+    }
   }
 
   &--2 {

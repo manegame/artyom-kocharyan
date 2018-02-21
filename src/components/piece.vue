@@ -2,11 +2,11 @@
   <transition appear
               name='fade'>
               <div class="scatter__cell__inner"
-                   :class='{"scatter__cell__inner--large": this.type === "burial"}'
+                   :class='{"scatter__cell__inner--large": $route.name === "single"}'
                    :style='{
                       transform: "rotate(" + randomRotation + "deg) translate(" + animatedTranslation + "px) rotate(-" + randomRotation + "deg)"
                      }'>
-                <div class="scatter__cell__inner__video"
+                <!-- <div class="scatter__cell__inner__video"
                      v-if='type === "burial"'>
                   <akYoutubeEmbed :video='video'/>
                 </div>
@@ -14,6 +14,9 @@
                     class="scatter__cell__inner__image"
                     :src='image.image.sizes["pwr-small"]'/>
                 <img v-if='type === "svg"'
+                    class="scatter__cell__inner__image"
+                    :src='image'/> -->
+                <img v-if='type === "dev"'
                     class="scatter__cell__inner__image"
                     :src='image'/>
               </div>
@@ -50,9 +53,8 @@ export default {
     }
   },
   methods: {
-    randomTranslation() {
-      if (this.type === 'burial') return Math.floor(Math.random() * 400)
-      else return Math.floor(Math.random() * 120)
+    randomTranslation(min, max) {
+      return min + Math.floor(Math.random() * max)
     }
   },
   computed: {
@@ -61,6 +63,14 @@ export default {
     }
   },
   watch: {
+    $route(to, from) {
+      if (to.name === 'single') {
+        this.translation = this.randomTranslation(300, 400)
+      }
+      if (to.name === 'akMain') {
+        this.translation = this.randomTranslation(20, 120)
+      }
+    },
     translation(newValue, oldValue) {
       let vm = this
       function animate() {
@@ -79,7 +89,7 @@ export default {
     }
   },
   mounted() {
-    this.translation = this.randomTranslation()
+    this.translation = this.randomTranslation(20, 120)
   }
 }
 </script>

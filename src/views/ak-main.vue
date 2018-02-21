@@ -4,7 +4,10 @@
     <div class="scatter"
          :class='"scatter--zoom_" + zoom'
          ref='scatter'>
-      <scatterCell v-for='(post, index) in main.posts'
+         <scatterCell :content='dev'
+                      :count='1'
+                      :type='"dev"'/>
+      <!-- <scatterCell v-for='(post, index) in main.posts'
                    :content='post'
                    :count='index + 1'
                    :type='"images"'
@@ -17,7 +20,7 @@
                    :content='post'
                    :count='index + 1'
                    :type='"burial"'
-                   @scrollTo='scrollTo'/>
+                   @scrollTo='scrollTo'/> -->
     </div>
   </div>
 </template>
@@ -31,6 +34,7 @@ export default {
   name: 'ak-main',
   data() {
     return {
+      dev: ['http://www.clker.com/cliparts/c/2/4/3/1194986855125869974rubik_s_cube_random_petr_01.svg.med.png', 'http://www.clker.com/cliparts/c/2/4/3/1194986855125869974rubik_s_cube_random_petr_01.svg.med.png', 'http://www.clker.com/cliparts/c/2/4/3/1194986855125869974rubik_s_cube_random_petr_01.svg.med.png', 'http://www.clker.com/cliparts/c/2/4/3/1194986855125869974rubik_s_cube_random_petr_01.svg.med.png'],
       zoom: 2,
       wW: window.innerWidth,
       wH: window.innerHeight,
@@ -119,10 +123,10 @@ export default {
     }
   },
   mounted() {
-    this.GET_POSTS()
-    this.GET_BURIAL()
-    this.GET_SVGS()
-    this.GET_VIDEOS()
+    // this.GET_POSTS()
+    // this.GET_BURIAL()
+    // this.GET_SVGS()
+    // this.GET_VIDEOS()
     this.scrollMiddle()
   }
 }
