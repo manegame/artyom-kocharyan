@@ -16,6 +16,7 @@ import akMain from './views/ak-main'
 import akSingle from './views/ak-single'
 import akBurial from './views/ak-burial'
 import akSvg from './views/ak-svg'
+import mainNew from './views/main-new'
 
 Vue.use(VueRouter)
 Vue.use(VueHead)
@@ -31,6 +32,14 @@ const router = new VueRouter({
       name: 'main',
       components: {
         lower: akMain,
+        upper: false
+      }
+    },
+    {
+      path: '/new/',
+      name: 'main new',
+      components: {
+        lower: mainNew,
         upper: false
       }
     },
