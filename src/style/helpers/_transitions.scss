@@ -29,3 +29,13 @@
 //   transform: scale(2);
 //   -webkit-transform: scale(2);
 // }
+//
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 3s ease-out;
+}
+
+.slide-enter,
+.slide-leave-to {
+  left: -50%;
+}

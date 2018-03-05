@@ -3,9 +3,6 @@
     <!-- <headbar /> -->
     <router-view name='lower'
                  class='lower'/>
-
-    <router-view name='upper'
-                 class='upper'/>
   </div>
 </template>
 
@@ -53,10 +50,16 @@ export default {
   },
   mounted() {
     this.$_setMetaTags()
+    this.$_fetchData(this.$route.name)
     this.been = this.$cookie.set('been', true, 7)
   },
   methods: {
-    ...mapActions(['GET_POSTS']),
+    ...mapActions([
+      'GET_POSTS',
+      'GET_SVGS',
+      'GET_BURIAL',
+      'GET_VIDEOS'
+    ]),
     $_setMetaTags(meta = {}) {
       this.meta.title = meta.title || this.meta.defaults.title
       this.meta.description = meta.description || this.meta.defaults.description
@@ -67,8 +70,12 @@ export default {
     },
     $_fetchData(routeName) {
       // All requests for data from the server originates from this function
-      if (routeName === 'home') {
+      console.log(routeName)
+      if (routeName === 'new') {
         this.GET_POSTS()
+        this.GET_BURIAL()
+        this.GET_SVGS()
+        this.GET_VIDEOS()
       }
     }
   },

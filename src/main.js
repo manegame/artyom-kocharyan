@@ -37,7 +37,23 @@ const router = new VueRouter({
     },
     {
       path: '/new/',
-      name: 'main new',
+      name: 'new',
+      components: {
+        lower: mainNew,
+        upper: false
+      }
+    },
+    {
+      path: '/new/:slug',
+      name: 'new single',
+      components: {
+        lower: mainNew,
+        upper: false
+      }
+    },
+    {
+      path: '/new/:slug/info',
+      name: 'info',
       components: {
         lower: mainNew,
         upper: false
