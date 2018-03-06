@@ -117,7 +117,7 @@ export default {
     position: absolute;
     width: 50%;
     height: 100%;
-    background: red;
+    background: $white;
     top: 0;
     left: -50%;
     transition: left 0.3s ease-in;
