@@ -17,6 +17,7 @@
     "contentful": "^5.0.5",
     "dragscroll": "^0.0.8",
     "gif.js.optimized": "^1.0.1",
+    "netlify-cli": "^1.2.2",
     "prismic-javascript": "^1.4.1",
     "raven-js": "^3.20.1",
     "reframe.js": "^2.1.14",
