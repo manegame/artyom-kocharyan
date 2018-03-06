@@ -7,6 +7,7 @@
            <div v-if='index < main.posts.length'
                 class="main__cluster__field"
                 :id='field.id'
+                :title='main.posts[index].slug'
                 :style='{
                   zIndex: field.zIndex,
                   top: "-" + field.top + "px",
@@ -81,13 +82,42 @@ export default {
               }
             }
           })
-          this.$router.push({name: 'new single', params: {slug: event.currentTarget.id}})
+          console.log('slug', event.currentTarget.title)
+          this.$router.push({name: 'new single', params: {slug: event.currentTarget.title}})
           window.setTimeout(() => {
             this.inTransition = false
           }, 310)
         }
       }
+    },
+    updateSizes() {
+      if (this.$route.name !== 'new') {
+        const rect = document.getElementById(this.activeField).parentNode.getBoundingClientRect()
+        this.fields.map((field) => {
+          if (field.id === this.activeField) {
+            field.top = rect.top
+            field.left = rect.left
+          }
+        })
+      }
     }
+  },
+  watch: {
+    $route(to, from) {
+      if (to.name === 'new') {
+        this.fields.forEach(field => {
+          this.activeField = 'none'
+          field.zIndex = 0
+          field.top = 0
+          field.left = 0
+          field.width = '100%'
+          field.height = '100%'
+        })
+      }
+    }
+  },
+  mounted() {
+    window.addEventListener('resize', this.updateSizes)
   }
 }
 </script>

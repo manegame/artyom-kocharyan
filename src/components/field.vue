@@ -1,15 +1,19 @@
 <template>
   <div class="field">
-    {{post.title.rendered}}
-    <img class="field__image"
-         v-if='post.acf.images !== undefined'
-         v-for='i in post.acf.images'
-         :src='i.image.sizes["medium"]'/>
-    <router-link :to="{ name: 'info', params: {slug: post.id} }">info</router-link>
-    <div class="field__info"
-         :class='{"field__info--active": $route.name === "info"}'>
-      <p v-html='post.acf.description' />
+    <router-link v-if='$route.name === "new single" || $route.name === "info"' class="temp" :to="{ name: 'info', params: {slug: post.slug} }">{{post.title.rendered}} info</router-link>
+    <div class="field__items"
+         :class='{"field__items--collapsed": this.$route.name === "info"}'>
+      <img class="field__items__image"
+           v-if='post.acf.images !== undefined'
+           v-for='i in post.acf.images'
+           :src='i.image.sizes["medium"]'/>
     </div>
+    <template v-if='$route.name === "new single" || $route.name === "info"'>
+      <div class="field__info"
+           :class='{"field__info--active": $route.name === "info"}'>
+        <p v-html='post.acf.description' />
+      </div>
+    </template>
   </div>
 </template>
 
@@ -70,6 +74,13 @@ export default {
 @import '../style/helpers/_reset.css';
 @import '../style/_variables.scss';
 
+.temp {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 99999;
+}
+
 .field {
   color: black;
   width: 100%;
@@ -83,9 +94,23 @@ export default {
     background: rgb(255, 247, 232);
   }
 
-  &__image {
-    width: 20%;
-    height: auto;
+  &__items {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    transition: all 0.3s ease-in;
+
+    &__image {
+      width: 20%;
+      height: auto;
+    }
+
+    &--collapsed {
+      width: 50%;
+      right: 0;
+    }
   }
 
   &__info {
@@ -96,6 +121,7 @@ export default {
     top: 0;
     left: -50%;
     transition: left 0.3s ease-in;
+    z-index: 9999999;
 
     &--active {
       left: 0;
