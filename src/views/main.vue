@@ -4,20 +4,21 @@
       <div v-for='(field, index) in fields'
            class="main__cluster"
            :class='"main__cluster--" + (index + 1)'>
-           <div v-if='index < main.posts.length'
+           <router-link tag='div'
+                :to='{name: "single", params: {slug: main.posts[index].slug}}'
+                v-if='index < main.posts.length'
                 class="main__cluster__field"
                 :id='field.id'
-                :title='main.posts[index].slug'
+                :ref='main.posts[index].slug'
                 :style='{
                   zIndex: field.zIndex,
                   top: "-" + field.top + "px",
                   left: "-" + field.left + "px",
                   width: field.width,
                   height: field.height
-                  }'
-                @click='handleClick'>
+                  }' >
                 <field :post='main.posts[index]' />
-           </div>
+           </router-link>
       </div>
   </div>
 </template>
@@ -28,7 +29,7 @@ import field from '../components/field'
 import headbar from '../components/headbar'
 
 export default {
-  name: 'main-new',
+  name: 'main',
   components: {
     field,
     headbar
@@ -56,42 +57,8 @@ export default {
     ...mapState(['main'])
   },
   methods: {
-    handleClick(event) {
-      if (this.$route.name === 'new') {
-        if (!this.inTransition) {
-          this.inTransition = true
-          // find element and change data accordingly
-          const rect = event.currentTarget.getBoundingClientRect()
-          // loop through the fields and set styles on the current target
-          this.fields.map((field) => {
-            if (field.id === event.currentTarget.id) {
-              if (this.activeField === 'none') {
-                this.activeField = field.id
-                field.zIndex = 999
-                field.top = rect.top
-                field.left = rect.left
-                field.width = '100vw'
-                field.height = '100vh'
-              } else {
-                this.activeField = 'none'
-                field.zIndex = 0
-                field.top = 0
-                field.left = 0
-                field.width = '100%'
-                field.height = '100%'
-              }
-            }
-          })
-          console.log('slug', event.currentTarget.title)
-          this.$router.push({name: 'new single', params: {slug: event.currentTarget.title}})
-          window.setTimeout(() => {
-            this.inTransition = false
-          }, 310)
-        }
-      }
-    },
     updateSizes() {
-      if (this.$route.name !== 'new') {
+      if (this.$route.name !== 'main') {
         const rect = document.getElementById(this.activeField).parentNode.getBoundingClientRect()
         this.fields.map((field) => {
           if (field.id === this.activeField) {
@@ -103,16 +70,40 @@ export default {
     }
   },
   watch: {
-    $route(to, from) {
-      if (to.name === 'new') {
-        this.fields.forEach(field => {
-          this.activeField = 'none'
-          field.zIndex = 0
-          field.top = 0
-          field.left = 0
-          field.width = '100%'
-          field.height = '100%'
-        })
+    '$route'(to, from) {
+      switch (to.name) {
+        case ('main'):
+          console.log('main!')
+          this.fields.forEach(field => {
+            this.activeField = 'none'
+            field.zIndex = 0
+            field.top = 0
+            field.left = 0
+            field.width = '100%'
+            field.height = '100%'
+          })
+          break
+        case ('single'):
+          console.log('single!')
+          const slug = this.$route.params.slug
+          // some ugly dark magic to get the element
+          const target = this.$refs[slug][0].$el
+          // find the rect of the parent, because that always stays the same
+          const rect = target.parentNode.getBoundingClientRect()
+          // loop through the fields and set styles on the current target
+          this.fields.map((field) => {
+            if (field.id === target.id) {
+              this.activeField = field.id
+              field.zIndex = 999
+              field.top = rect.top
+              field.left = rect.left
+              field.width = '100vw'
+              field.height = '100vh'
+            }
+          })
+          break
+        case ('info'):
+          break
       }
     }
   },

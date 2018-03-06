@@ -1,6 +1,7 @@
 <template>
   <div class="field">
-    <router-link v-if='$route.name === "new single" || $route.name === "info"' class="temp" :to="{ name: 'info', params: {slug: post.slug} }">{{post.title.rendered}} info</router-link>
+    <router-link v-if='$route.name === "single" || $route.name === "info"' class="temp" :to="{ name: 'info', params: {slug: post.slug} }">{{post.title.rendered}} info</router-link>
+    <!-- main content -->
     <div class="field__items"
          :class='{"field__items--collapsed": this.$route.name === "info"}'>
       <img class="field__items__image"
@@ -8,7 +9,8 @@
            v-for='i in post.acf.images'
            :src='i.image.sizes["medium"]'/>
     </div>
-    <template v-if='$route.name === "new single" || $route.name === "info"'>
+    <!-- info panel -->
+    <template v-if='$route.name === "single" || $route.name === "info"'>
       <div class="field__info"
            :class='{"field__info--active": $route.name === "info"}'>
         <p v-html='post.acf.description' />

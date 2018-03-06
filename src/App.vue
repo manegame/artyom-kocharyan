@@ -1,8 +1,7 @@
 <template>
   <div class='app'>
     <!-- <headbar /> -->
-    <router-view name='lower'
-                 class='lower'/>
+    <router-view />
   </div>
 </template>
 
@@ -70,12 +69,19 @@ export default {
     },
     $_fetchData(routeName) {
       // All requests for data from the server originates from this function
-      console.log(routeName)
-      if (routeName === 'new') {
-        this.GET_POSTS()
-        this.GET_BURIAL()
-        this.GET_SVGS()
-        this.GET_VIDEOS()
+      switch (routeName) {
+        case 'main':
+          this.GET_POSTS()
+          this.GET_BURIAL()
+          this.GET_SVGS()
+          this.GET_VIDEOS()
+          break
+        case 'single':
+          this.GET_POSTS()
+          this.GET_BURIAL()
+          this.GET_SVGS()
+          this.GET_VIDEOS()
+          break
       }
     }
   },
@@ -147,12 +153,6 @@ export default {
     @include viewport;
 
     z-index: 8;
-  }
-
-  .upper {
-    @include viewport;
-
-    z-index: 9;
   }
 }
 </style>

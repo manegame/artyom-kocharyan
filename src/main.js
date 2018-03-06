@@ -12,11 +12,7 @@ import VueYouTubeEmbed from 'vue-youtube-embed'
 import VueCookie from 'vue-cookie'
 import dragscroll from 'dragscroll'
 import store from './store'
-import akMain from './views/ak-main'
-import akSingle from './views/ak-single'
-import akBurial from './views/ak-burial'
-import akSvg from './views/ak-svg'
-import mainNew from './views/main-new'
+import main from './views/main'
 
 Vue.use(VueRouter)
 Vue.use(VueHead)
@@ -30,71 +26,19 @@ const router = new VueRouter({
     {
       path: '/',
       name: 'main',
-      components: {
-        lower: akMain,
-        upper: false
-      }
+      component: main
     },
     {
-      path: '/new/',
-      name: 'new',
-      components: {
-        lower: mainNew,
-        upper: false
-      }
-    },
-    {
-      path: '/new/:slug',
-      name: 'new single',
-      components: {
-        lower: mainNew,
-        upper: false
-      }
-    },
-    {
-      path: '/new/:slug/info',
-      name: 'info',
-      components: {
-        lower: mainNew,
-        upper: false
-      }
-    },
-    {
-      path: '/burial/:video',
-      name: 'burial',
-      components: {
-        lower: akMain,
-        upper: akBurial
-      }
-    },
-    {
-      path: '/single/:slug/',
+      path: '/:slug',
       name: 'single',
-      components: {
-        lower: akMain,
-        upper: akSingle
-      }
+      component: main
     },
-    // {
-    //   path: '/svg/',
-    //   name: 'svg',
-    //   components: {
-    //     lower: akMain,
-    //     upper: akSvg
-    //   }
-    // }
     {
-      path: '/svg/:component',
-      name: 'svg',
-      components: {
-        lower: akMain,
-        upper: akSvg
-      }
+      path: '/:slug/info',
+      name: 'info',
+      component: main
     }
-  ],
-  scrollBehavior (to, from, savedPosition) {
-    return { x: 0, y: 0 }
-  }
+  ]
 })
 
 // Raven
