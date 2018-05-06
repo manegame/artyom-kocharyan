@@ -1,39 +1,64 @@
 <template>
   <div class="main single"
        v-if='main.single.acf'>
-    <headbar />
+    <headbar v-if='$route.name !== "lightbox"'/>
     <div class='main__cluster main__cluster--1'>
       <p v-html='main.single.title.rendered' />
     </div>
     <div v-for='(image, index) in main.single.acf.images'
         :key='image.id'
-        :class='"main__cluster--" + (index + 2)'>
-        <img v-if='image.image !== false' class='main__cluster__image' :src='image.image.sizes["pwr-small"]' />
+        :class='"main__cluster--" + (index + 2)'
+        @mousedown='blackFeedback'>
+        <router-link v-if='image.image !== false' 
+             tag='img'
+             class='main__cluster__image'
+             :to='{name: "lightbox", params: {index: index}}'
+             :src='image.image.sizes["pwr-small"]' />
     </div>
     <div v-if='main.single.acf.description'
          class='main__cluster main__cluster--bottom_right'>
       <router-link v-if='$route.name === "single"' :to='{name: "info", params: {slug: main.single.slug}}'>Info</router-link>
-      <router-link v-else :to='{name: "single", params: {slug: main.single.slug}}'>Info</router-link>
+      <router-link v-if='$route.name === "info"' :to='{name: "single", params: {slug: main.single.slug}}'>Close</router-link>
     </div>
     <!-- info panel -->
     <div class="single__info"
           :class='{"single__info--active": $route.name === "info"}'
           v-html='main.single.acf.description'>
     </div>
+    <!-- slideshow popup -->
+    <template v-if='$route.name === "lightbox"'>
+    <lightbox />
+      <div class='main__cluster main__cluster--home'>
+        <router-link :to='{name: "single", params: {slug: main.single.slug}}'>Close</router-link>
+      </div>
+      <div class='main__cluster main__cluster--bottom_left'>
+        <router-link :to='{name: "lightbox", params: {index: $route.params.index--}}'>Previous</router-link>
+      </div>
+      <div class='main__cluster main__cluster--bottom_right'>
+        <router-link :to='{name: "lightbox", params: {index: ($route.params.index + 1)}}'>Next</router-link>
+      </div>
+    </template>
   </div>
 </template>
 
 <script>
 import {mapState} from 'vuex'
 import headbar from '../components/headbar'
+import lightbox from '../components/lightbox'
 
 export default {
   name: 'single',
   components: {
-    headbar
+    headbar,
+    lightbox
   },
   computed: {
     ...mapState(['main'])
+  },
+  methods: {
+    blackFeedback() {
+      console.log('display a black square')
+    }
   }
 }
 </script>
@@ -69,5 +94,9 @@ export default {
       left: 0;
     }
   }
+}
+
+.main__cluster__image {
+  cursor: pointer;
 }
 </style>

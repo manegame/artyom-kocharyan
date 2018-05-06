@@ -45,8 +45,7 @@ export default {
     this.been = this.$cookie.set('been', true, 7)
   },
   created() {
-    console.log('created')
-    this.$_initCustomScrollbars()
+    if (this.$route.name === 'info' || this.$route.name === 'single') this.$_initCustomScrollbars()
   },
   methods: {
     ...mapActions([
@@ -68,7 +67,7 @@ export default {
         this.GET_POSTS()
         this.CLEAR_SINGLE_EXHIBITION()
       }
-      if (routeName === 'single' || routeName === 'info') {
+      if (routeName === 'single' || routeName === 'info' || routeName === 'lightbox') {
         this.GET_SINGLE_EXHIBITION(this.$route.params.slug)
       }
     },

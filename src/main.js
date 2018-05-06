@@ -38,6 +38,11 @@ const router = new VueRouter({
       path: '/:slug/info',
       name: 'info',
       component: single
+    },
+    {
+      path: '/:slug/lightbox/:index',
+      name: 'lightbox',
+      component: single
     }
   ]
 })
