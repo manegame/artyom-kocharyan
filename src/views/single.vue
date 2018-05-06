@@ -31,12 +31,15 @@
       <div class='main__cluster main__cluster--home'>
         <router-link :to='{name: "single", params: {slug: main.single.slug}}'>Close</router-link>
       </div>
-      <div class='main__cluster main__cluster--bottom_left'>
-        <router-link :to='{name: "lightbox", params: {index: $route.params.index--}}'>Previous</router-link>
-      </div>
-      <div class='main__cluster main__cluster--bottom_right'>
-        <router-link :to='{name: "lightbox", params: {index: ($route.params.index + 1)}}'>Next</router-link>
-      </div>
+      <template v-if='main.single.acf.slideshow === "user"'>
+        <div class='main__cluster main__cluster--bottom_left'>
+          <router-link :to='{name: "lightbox", params: {index: $route.params.index--}}'>Previous</router-link>
+        </div>
+        <div class='main__cluster main__cluster--bottom_right'>
+          <router-link :to='{name: "lightbox", params: {index: ($route.params.index + 1)}}'>Next</router-link>
+        </div>
+      </template>
+      <template v-else></template>
     </template>
   </div>
 </template>
