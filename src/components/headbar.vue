@@ -1,12 +1,13 @@
 <template>
-  <div class="headbar"
-       :class='{"headbar--light": light}'>
-
+  <div class="main__cluster main__cluster--home">
     <router-link class='headbar__item'
                  :to="{ name: 'main' }"
                  v-html='"Artyom Kocharyan"' />
+  </div>
+</template>
 
-    <router-link class='headbar__item'
+
+      <!-- <router-link class='headbar__item'
                  :class='{
                    "headbar__item--active": $route.name === "burial" ||
                                             $route.name === "svg" ||
@@ -43,10 +44,7 @@
     <router-link class='headbar__item--active headbar__item--active--flipped'
                 v-if='$route.name === "svg"'
                 :to='{ name: "svg", params: {component: "venus", title: "Venus de Milo"}}'
-                v-html='"next"'/>
-
-  </div>
-</template>
+                v-html='"next"'/> -->
 
 <script>
 import {mapState} from 'vuex'
@@ -74,37 +72,6 @@ export default {
 @import '../style/_variables.scss';
 
 .headbar {
-  position: fixed;
-  width: 100%;
-  top: 0;
-  padding: 0 20px;
-  text-align: left;
-  font-family: 'Times New Roman';
-  font-size: $font-size;
-  line-height: $line-height;
-  cursor: pointer;
-
-  &--light {
-    filter: invert(100%);
-  }
-
-  &__item {
-    color: $black;
-    white-space: nowrap;
-    margin-right: 0.2em;
-    text-decoration: none;
-
-    &--active {
-      color: transparent;
-      background-image: url('../../static/arrow.png');
-      background-size: cover;
-
-      &--flipped,
-      &--flipped:hover {
-        background-image: url('../../static/arrow-r.png');
-        background-position: right;
-      }
-    }
-  }
+  text-align: center;
 }
 </style>

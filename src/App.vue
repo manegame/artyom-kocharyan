@@ -1,6 +1,6 @@
 <template>
   <div class='app'>
-    <!-- <headbar /> -->
+    <headbar />
     <router-view />
   </div>
 </template>
@@ -39,13 +39,13 @@ export default {
     ...mapState(['main'])
   },
   created() {
-    if (!this.been) {
-      console.log('never been here before')
-      this.$cookie.set('been', true, 7)
-    } else {
-      console.log('been here before')
-    }
-    document.addEventListener('unload', this.$cookie.delete('been'))
+    // if (!this.been) {
+    //   console.log('never been here before')
+    //   this.$cookie.set('been', true, 7)
+    // } else {
+    //   console.log('been here before')
+    // }
+    // document.addEventListener('unload', this.$cookie.delete('been'))
   },
   mounted() {
     this.$_setMetaTags()
@@ -55,9 +55,10 @@ export default {
   methods: {
     ...mapActions([
       'GET_POSTS',
-      'GET_SVGS',
-      'GET_BURIAL',
-      'GET_VIDEOS'
+      'SET_FIELD',
+      'FIELDS_SET',
+      'GET_SINGLE_EXHIBITION',
+      'CLEAR_SINGLE_EXHIBITION'
     ]),
     $_setMetaTags(meta = {}) {
       this.meta.title = meta.title || this.meta.defaults.title
@@ -69,19 +70,21 @@ export default {
     },
     $_fetchData(routeName) {
       // All requests for data from the server originates from this function
-      switch (routeName) {
-        case 'main':
-          this.GET_POSTS()
-          this.GET_BURIAL()
-          this.GET_SVGS()
-          this.GET_VIDEOS()
-          break
-        case 'single':
-          this.GET_POSTS()
-          this.GET_BURIAL()
-          this.GET_SVGS()
-          this.GET_VIDEOS()
-          break
+      this.CLEAR_SINGLE_EXHIBITION()
+      if (routeName === 'main' && !this.main.fieldsSet) {
+        this.GET_POSTS()
+          .then(() => {
+            this.main.posts.forEach(post => {
+              console.log('set field')
+              this.SET_FIELD(post)
+            })
+          })
+          .then(() => {
+            this.FIELDS_SET()
+          })
+      }
+      if (routeName === 'single') {
+        this.GET_SINGLE_EXHIBITION(this.$route.params.slug)
       }
     }
   },
@@ -117,6 +120,11 @@ export default {
         {itemprop: 'image', content: this.meta.image}
       ]
     }
+  },
+  watch: {
+    '$route'(to, from) {
+      this.$_fetchData(this.$route.name)
+    }
   }
 }
 </script>
@@ -127,14 +135,6 @@ export default {
 @import './style/helpers/_responsive.scss';
 @import './style/_variables.scss';
 
-@mixin viewport {
-  width: 100vw;
-  height: 100vh;
-  position: fixed;
-  top: 0;
-  left: 0;
-}
-
 .app {
   min-height: 100vh;
   font-family: 'Times New Roman';
@@ -144,15 +144,5 @@ export default {
   background: $white;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  .headbar {
-    z-index: 10;
-  }
-
-  .lower {
-    @include viewport;
-
-    z-index: 8;
-  }
 }
 </style>

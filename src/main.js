@@ -13,6 +13,7 @@ import VueCookie from 'vue-cookie'
 import dragscroll from 'dragscroll'
 import store from './store'
 import main from './views/main'
+import single from './views/single'
 
 Vue.use(VueRouter)
 Vue.use(VueHead)
@@ -31,7 +32,7 @@ const router = new VueRouter({
     {
       path: '/:slug',
       name: 'single',
-      component: main
+      component: single
     },
     {
       path: '/:slug/info',

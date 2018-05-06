@@ -1,16 +1,14 @@
 <template>
-  <div class="main">
-    <router-link v-if='main.fieldsSet'
-          v-for='(field, index) in main.fields'
-          tag='div'
-          class="main__cluster"
-          :to='{name: "single", params: {slug: field.post.slug}}'
-          :key='field.id'
-          :class='"main__cluster--" + (index + 1)'>
-          <field v-if='field.post' 
-                :post='field.post' />
-          <p v-else>field undefined </p>
-    </router-link>
+  <div class="main single"
+       v-if='main.single.acf'>
+    <div class='main__cluster main__cluster--1'>
+      <p v-html='main.single.title.rendered' />
+    </div>
+    <div v-for='(image, index) in main.single.acf.images'
+        :key='image.id'
+        :class='"main__cluster--" + (index + 2)'>
+        <img class='main__cluster__image' :src='image.image.sizes["pwr-small"]' />
+    </div>
   </div>
 </template>
 
@@ -19,7 +17,7 @@ import {mapState} from 'vuex'
 import field from '../components/field'
 
 export default {
-  name: 'main',
+  name: 'single',
   components: {
     field
   },

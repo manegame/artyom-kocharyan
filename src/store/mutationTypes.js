@@ -1,4 +1,7 @@
 export const SET_POSTS = 'SET_POSTS'
+export const SET_FIELD = 'SET_FIELD'
+export const FIELDS_SET = 'FIELDS_SET'
+export const SET_ACTIVE = 'SET_ACTIVE'
 export const SET_BURIAL = 'SET_BURIAL'
 export const SET_VIDEOS = 'SET_VIDEOS'
 export const SET_SVGS = 'SET_SVGS'
