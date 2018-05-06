@@ -1,19 +1,14 @@
 <template>
   <div class='app'>
-    <headbar />
     <router-view />
   </div>
 </template>
 
 <script>
 import {mapState, mapActions} from 'vuex'
-import headbar from './components/headbar'
 
 export default {
   name: 'app',
-  components: {
-    headbar
-  },
   data() {
     return {
       been: false,
@@ -38,15 +33,6 @@ export default {
   computed: {
     ...mapState(['main'])
   },
-  created() {
-    // if (!this.been) {
-    //   console.log('never been here before')
-    //   this.$cookie.set('been', true, 7)
-    // } else {
-    //   console.log('been here before')
-    // }
-    // document.addEventListener('unload', this.$cookie.delete('been'))
-  },
   mounted() {
     this.$_setMetaTags()
     this.$_fetchData(this.$route.name)
@@ -55,8 +41,6 @@ export default {
   methods: {
     ...mapActions([
       'GET_POSTS',
-      'SET_FIELD',
-      'FIELDS_SET',
       'GET_SINGLE_EXHIBITION',
       'CLEAR_SINGLE_EXHIBITION'
     ]),
@@ -71,17 +55,8 @@ export default {
     $_fetchData(routeName) {
       // All requests for data from the server originates from this function
       this.CLEAR_SINGLE_EXHIBITION()
-      if (routeName === 'main' && !this.main.fieldsSet) {
+      if (routeName === 'main') {
         this.GET_POSTS()
-          .then(() => {
-            this.main.posts.forEach(post => {
-              console.log('set field')
-              this.SET_FIELD(post)
-            })
-          })
-          .then(() => {
-            this.FIELDS_SET()
-          })
       }
       if (routeName === 'single') {
         this.GET_SINGLE_EXHIBITION(this.$route.params.slug)
@@ -144,5 +119,20 @@ export default {
   background: $white;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  a {
+    color: $black;
+    text-decoration: none;
+
+    &:visited,
+    &:hover {
+      color: $black;
+      text-decoration: none;
+    }
+
+    &:active {
+      text-decoration: underline;
+    }
+  }
 }
 </style>

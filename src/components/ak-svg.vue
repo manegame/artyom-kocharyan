@@ -34,7 +34,6 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['GET_SVGS']),
     initPanZoom() {
       this.show = true
       console.log('trying to initialize')
@@ -45,9 +44,6 @@ export default {
         minZoom: 0.01
       })
     }
-  },
-  mounted() {
-    this.GET_SVGS()
   },
   beforeRouteUpdate(to, from, next) {
     console.log('going away')

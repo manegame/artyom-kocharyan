@@ -5,8 +5,6 @@ import * as mutationTypes from '../mutationTypes'
 
 const state = {
   posts: [],
-  fields: [],
-  fieldsSet: false,
   single: [],
   svg: [],
   burial: {

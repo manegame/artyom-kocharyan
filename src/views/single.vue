@@ -1,6 +1,7 @@
 <template>
   <div class="main single"
        v-if='main.single.acf'>
+    <headbar />
     <div class='main__cluster main__cluster--1'>
       <p v-html='main.single.title.rendered' />
     </div>
@@ -14,12 +15,12 @@
 
 <script>
 import {mapState} from 'vuex'
-import field from '../components/field'
+import headbar from '../components/headbar'
 
 export default {
   name: 'single',
   components: {
-    field
+    headbar
   },
   computed: {
     ...mapState(['main'])

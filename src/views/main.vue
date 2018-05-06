@@ -1,27 +1,26 @@
 <template>
   <div class="main">
-    <router-link v-if='main.fieldsSet'
-          v-for='(field, index) in main.fields'
+    <headbar />
+    <router-link v-if='main.posts.length'
+          v-for='(post, index) in main.posts'
           tag='div'
           class="main__cluster"
-          :to='{name: "single", params: {slug: field.post.slug}}'
-          :key='field.id'
+          :to='{name: "single", params: {slug: post.slug}}'
+          :key='post.id'
           :class='"main__cluster--" + (index + 1)'>
-          <field v-if='field.post' 
-                :post='field.post' />
-          <p v-else>field undefined </p>
+          <a v-html='post.title.rendered' @click.prevent/>
     </router-link>
   </div>
 </template>
 
 <script>
 import {mapState} from 'vuex'
-import field from '../components/field'
+import headbar from '../components/headbar'
 
 export default {
   name: 'main',
   components: {
-    field
+    headbar
   },
   computed: {
     ...mapState(['main'])
