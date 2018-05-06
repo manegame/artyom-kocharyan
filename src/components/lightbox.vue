@@ -1,7 +1,10 @@
 <template>
   <div class='lightbox main__cluster--lightbox'
       v-if='main.single.acf'>
-    <img class='lightbox__image' :src='main.single.acf.images[$route.params.index].image.sizes["pwr-large"]'>
+    <img class='lightbox__image' 
+         v-if='main.single.acf.images[$route.params.index].image !== false' 
+         :src='main.single.acf.images[$route.params.index].image.sizes["pwr-large"]'>
+    <p class='lightbox__text' v-else>Hey guys, seems to be no pic here. ¯\_(ツ)_/¯</p>
   </div>
 </template>
 
@@ -38,6 +41,11 @@ export default {
     width: 100%;
     height: 100%;
     object-fit: contain;
+  }
+
+  &__text {
+    text-align: center;
+    vertical-align: center;
   }
 }
 </style>

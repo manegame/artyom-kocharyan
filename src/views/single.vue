@@ -33,10 +33,10 @@
       </div>
       <template v-if='main.single.acf.slideshow === "user"'>
         <div class='main__cluster main__cluster--bottom_left'>
-          <router-link :to='{name: "lightbox", params: {index: $route.params.index--}}'>Previous</router-link>
+          <router-link v-if='$route.params.index > 0' :to='{name: "lightbox", params: {index: prevIndex}}'>Previous</router-link>
         </div>
         <div class='main__cluster main__cluster--bottom_right'>
-          <router-link :to='{name: "lightbox", params: {index: ($route.params.index + 1)}}'>Next</router-link>
+          <router-link v-if='$route.params.index < main.single.acf.images.length - 1' :to='{name: "lightbox", params: {index: nextIndex}}'>Next</router-link>
         </div>
       </template>
       <template v-else></template>
@@ -56,7 +56,18 @@ export default {
     lightbox
   },
   computed: {
-    ...mapState(['main'])
+    ...mapState(['main']),
+    nextIndex() {
+      if (this.$route.name === 'lightbox') {
+        // console.log(this.main.single.acf.images.length)
+        return this.$route.params.index + 1
+      }
+    },
+    prevIndex() {
+      if (this.$route.name === 'lightbox') {
+        return this.$route.params.index - 1
+      }
+    }
   },
   methods: {
     blackFeedback() {
