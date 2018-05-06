@@ -6,12 +6,18 @@
 
 <script>
 import {mapState, mapActions} from 'vuex'
+import PerfectScrollbar from 'perfect-scrollbar'
 
 export default {
   name: 'app',
   data() {
     return {
-      been: false,
+      ps: [],
+      scrollConfig: {
+        minScrollbarLength: 40,
+        maxScrollbarLength: 120,
+        suppressScrollX: true
+      },
       meta: {
         sitename: 'Artyom Kocharyan',
         facebook: 'xxxxxxxxx',
@@ -38,6 +44,10 @@ export default {
     this.$_fetchData(this.$route.name)
     this.been = this.$cookie.set('been', true, 7)
   },
+  created() {
+    console.log('created')
+    this.$_initCustomScrollbars()
+  },
   methods: {
     ...mapActions([
       'GET_POSTS',
@@ -54,12 +64,26 @@ export default {
     },
     $_fetchData(routeName) {
       // All requests for data from the server originates from this function
-      this.CLEAR_SINGLE_EXHIBITION()
       if (routeName === 'main') {
         this.GET_POSTS()
+        this.CLEAR_SINGLE_EXHIBITION()
       }
-      if (routeName === 'single') {
+      if (routeName === 'single' || routeName === 'info') {
         this.GET_SINGLE_EXHIBITION(this.$route.params.slug)
+      }
+    },
+    $_initCustomScrollbars() {
+      console.log('init scrollbars')
+      window.setTimeout(() => {
+        this.ps[0] = new PerfectScrollbar('.single__info', this.scrollConfig)
+      }, 500)
+    },
+    $_destroyCustomScrollbars() {
+      console.log('destroy scrollbars')
+      if (this.ps[0]) {
+        console.log('destroy scrollbars yepp')
+        this.ps[0].destroy()
+        this.ps[0] = null
       }
     }
   },
@@ -99,6 +123,12 @@ export default {
   watch: {
     '$route'(to, from) {
       this.$_fetchData(this.$route.name)
+      if (to.name === 'single' || to.name === 'info') {
+        if (this.ps.length > 0) {
+          this.$_destroyCustomScrollbars()
+        }
+        this.$_initCustomScrollbars()
+      }
     }
   }
 }
@@ -109,6 +139,7 @@ export default {
 @import './style/helpers/_reset.css';
 @import './style/helpers/_responsive.scss';
 @import './style/_variables.scss';
+@import './style/vendor/perfect-scrollbar.css';
 
 .app {
   min-height: 100vh;
@@ -119,6 +150,14 @@ export default {
   background: $white;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  em {
+    font-style: italic;
+  }
+
+  p {
+    margin-bottom: $line-height;
+  }
 
   a {
     color: $black;
@@ -132,6 +171,18 @@ export default {
 
     &:active {
       text-decoration: underline;
+    }
+  }
+
+  .ps__rail-y {
+    opacity: 1;
+    width: 14px;
+    margin: 20px 0;
+
+    .ps__thumb-y {
+      background: $black;
+      width: 8px;
+      margin-right: 1px;
     }
   }
 }

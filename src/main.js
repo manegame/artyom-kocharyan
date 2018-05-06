@@ -37,7 +37,7 @@ const router = new VueRouter({
     {
       path: '/:slug/info',
       name: 'info',
-      component: main
+      component: single
     }
   ]
 })
