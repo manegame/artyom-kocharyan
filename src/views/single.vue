@@ -32,16 +32,16 @@
     </template>
     <!-- INFO BUTTON -->
     <div v-if='main.single.acf.description'
-         class='main__cluster main__cluster--bottom_right'>
+         class='main__cluster main__cluster--top_left'>
       <router-link v-if='$route.name === "single"' :to='{name: "info", params: {slug: main.single.slug}}'>Info</router-link>
       <router-link v-if='$route.name === "info"' :to='{name: "single", params: {slug: main.single.slug}}'>Close</router-link>
     </div>
-    <!-- info panel -->
+    <!-- INFO PANEL -->
     <div class="single__info"
           :class='{"single__info--active": $route.name === "info"}'
           v-html='main.single.acf.description'>
     </div>
-    <!-- slideshow popup -->
+    <!-- SLIDESHOW OVERLAY -->
     <template v-if='$route.name === "lightbox"'>
     <lightbox />
       <div class='main__cluster main__cluster--home'>
@@ -121,8 +121,10 @@ export default {
     -webkit-transition: left 0.3s ease-out;
 
     @include screen-size('medium') {
-      width: 80vw;
-      left: -80vw;
+      width: 100vw;
+      left: -100vw;
+      top: 20vh;
+      height: 80vh;
     }
 
     &--active {

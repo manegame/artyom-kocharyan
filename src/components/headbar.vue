@@ -9,7 +9,12 @@
 
 <script>
 export default {
-  name: 'headbar'
+  name: 'headbar',
+  data() {
+    return {
+      dark: false
+    }
+  }
 }
 </script>
 
