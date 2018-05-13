@@ -65,12 +65,14 @@ export default {
       // All requests for data from the server originates from this function
       if (routeName === 'main') {
         this.GET_POSTS()
-        this.CLEAR_SINGLE_EXHIBITION()
       }
       if (routeName === 'single' || routeName === 'info' || routeName === 'lightbox') {
-        this.GET_POSTS().then(() => {
-          this.GET_SINGLE_EXHIBITION(this.$route.params.slug)
-        })
+        if (this.main.posts.length) this.GET_SINGLE_EXHIBITION(this.$route.params.slug)
+        else {
+          this.GET_POSTS().then(() => {
+            this.GET_SINGLE_EXHIBITION(this.$route.params.slug)
+          })
+        }
       }
     },
     $_initCustomScrollbars() {
@@ -153,12 +155,14 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  em {
-    font-style: italic;
+  p,
+  a {
+    font-size: $font-size;
+    line-height: $line-height;
   }
 
-  p {
-    margin-bottom: $line-height;
+  em {
+    font-style: italic;
   }
 
   a {
