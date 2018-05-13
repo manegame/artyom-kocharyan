@@ -2,8 +2,8 @@
   <div class='lightbox main__cluster--lightbox'
       v-if='main.single.acf'>
     <img class='lightbox__image' 
-         v-if='main.single.acf.images[$route.params.index].image !== false' 
-         :src='main.single.acf.images[$route.params.index].image.sizes["pwr-large"]'>
+        v-if='main.single.acf.images[$route.params.index].image !== false' 
+        :src='main.single.acf.images[$route.params.index].image.sizes["pwr-large"]'>
     <p class='lightbox__text' v-else>Hey guys, seems to be no pic here. ¯\_(ツ)_/¯</p>
   </div>
 </template>
@@ -30,7 +30,6 @@ export default {
 .lightbox {
   background: $white;
   z-index: 10;
-  overflow: hidden;
 
   &__next,
   &__prev {

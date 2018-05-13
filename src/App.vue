@@ -64,6 +64,7 @@ export default {
     $_fetchData(routeName) {
       // All requests for data from the server originates from this function
       if (routeName === 'main') {
+        this.CLEAR_SINGLE_EXHIBITION()
         this.GET_POSTS()
       }
       if (routeName === 'single' || routeName === 'info' || routeName === 'lightbox') {
@@ -154,6 +155,10 @@ export default {
   background: $white;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  .single__info p {
+    margin-bottom: $line-height;
+  }
 
   p,
   a {

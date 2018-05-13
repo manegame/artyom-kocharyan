@@ -1,5 +1,6 @@
 <template>
   <div class="main single"
+       :class='{"single--squashed": $route.name === "info"}'
        v-if='main.single.acf'>
     <!-- HEADER -->
     <headbar v-if='$route.name !== "lightbox"'/>
@@ -19,7 +20,7 @@
           :to='{name: "lightbox", params: {index: index}}'
           :src='image.image.sizes["pwr-small"]' />
       </div>
-      <!-- Jump title -->
+      <!-- Skip the title -->
       <div  :key='index' 
             v-else
             :class='"main__cluster--" + (index + 2)'>
@@ -43,11 +44,13 @@
     </div>
     <!-- SLIDESHOW OVERLAY -->
     <template v-if='$route.name === "lightbox"'>
-    <lightbox />
-      <div class='main__cluster main__cluster--home'>
+      <!-- LIGHTBOX -->
+      <lightbox />
+      <!-- CONTROLS -->
+      <div class='main__cluster main__cluster--top_left'>
         <router-link :to='{name: "single", params: {slug: main.single.slug}}'>Close</router-link>
       </div>
-      <template v-if='main.single.acf.slideshow === "user"'>
+      <template v-if='main.single.acf.slideshow === "user" && small'>
         <div class='main__cluster main__cluster--bottom_left'>
           <router-link v-if='$route.params.index > 0' :to='{name: "lightbox", params: {index: prevIndex}}'>Previous</router-link>
         </div>
@@ -55,7 +58,9 @@
           <router-link v-if='$route.params.index < main.single.acf.images.length - 1' :to='{name: "lightbox", params: {index: nextIndex}}'>Next</router-link>
         </div>
       </template>
-      <template v-else></template>
+      <template v-else>
+        <!--  -->
+      </template>
     </template>
   </div>
 </template>
@@ -83,6 +88,9 @@ export default {
       if (this.$route.name === 'lightbox') {
         return this.$route.params.index - 1
       }
+    },
+    small() {
+      if (window.innerWidth < 900) return true
     }
   },
   methods: {
@@ -107,11 +115,25 @@ export default {
 @import '../style/_main.scss';
 
 .single {
+  position: absolute;
+  right: 0;
+  transition: width 0.3s ease-out;
+  -moz-transition: width 0.3s ease-out;
+  -webkit-transition: width 0.3s ease-out;
+
+  &--squashed {
+    width: 60vw;
+
+    @include screen-size('small') {
+      width: initial;
+    }
+  }
+
   &__info {
     background: $white;
     width: 40vw;
     height: 100vh;
-    position: absolute;
+    position: fixed;
     left: -40vw;
     top: 0;
     overflow: hidden;
