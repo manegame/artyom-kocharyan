@@ -30,7 +30,7 @@ export default {
 
 <style scoped lang='scss'>
 @import '../style/helpers/_mixins.scss';
-@import '../style/helpers/_grid.scss';
+@import '../style/helpers/_cluster.scss';
 @import '../style/helpers/_responsive.scss';
 @import '../style/helpers/_reset.css';
 @import '../style/_variables.scss';

@@ -118,10 +118,19 @@
   &--home {
     grid-column: 1 / 2;
     grid-row: 1 / 3;
+
+    @include screen-size('small') {
+      grid-column: 1 / 6;
+    }
   }
 
   &--lightbox {
     grid-column: 2 / 5;
     grid-row: 1 / 11;
+
+    @include screen-size('small') {
+      grid-column: 1 / 6;
+      grid-row: 3 / 9;
+    }
   }
 }
