@@ -77,9 +77,16 @@ const mutations = {
     state.fieldsSet = true
   },
   [mutationTypes.SET_POSTS](state, data) {
+    data.map((line, index) => {
+      line.index = index + 1
+    })
     state.posts = data
   },
   [mutationTypes.SET_SINGLE_EXHIBITION](state, data) {
+    // compare with posts
+    let post = state.posts.filter(post => { return post.id === data.id })
+    // set index
+    data.index = post[0].index
     state.single = data
   },
   [mutationTypes.SET_SVGS](state, data) {

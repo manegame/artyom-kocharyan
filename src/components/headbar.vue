@@ -2,8 +2,7 @@
   <div class="main__cluster main__cluster--home">
     <router-link class='headbar__item'
                  :to="{ name: 'main' }">
-                 Artyom <br>
-                 Kocharyan
+                 Artyom Kocharyan
     </router-link>
   </div>
 </template>

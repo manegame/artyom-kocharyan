@@ -7,7 +7,7 @@
           class="main__cluster"
           :to='{name: "single", params: {slug: post.slug}}'
           :key='post.id'
-          :class='"main__cluster--" + (index + 1)'>
+          :class='"main__cluster--" + (post.index)'>
           <a v-html='post.title.rendered' @click.prevent/>
     </router-link>
   </div>

@@ -24,6 +24,7 @@
     "reframe.js": "^2.1.14",
     "svg-pan-zoom": "^3.5.3",
     "tween.js": "^16.6.0",
+    "vanilla-tilt": "^1.4.1",
     "vue": "^2.5.9",
     "vue-cookie": "^1.1.4",
     "vue-head": "^2.0.11",

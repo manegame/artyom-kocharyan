@@ -1,20 +1,36 @@
 <template>
   <div class="main single"
        v-if='main.single.acf'>
+    <!-- HEADER -->
     <headbar v-if='$route.name !== "lightbox"'/>
-    <div class='main__cluster main__cluster--1'>
+    <!-- TITLE -->
+    <div class='main__cluster'
+         :class='"main__cluster--" + main.single.index'>
       <p v-html='main.single.title.rendered' />
     </div>
-    <div v-for='(image, index) in main.single.acf.images'
-        :key='image.id'
-        :class='"main__cluster--" + (index + 2)'
-        @mousedown='blackFeedback'>
+    <!-- IMAGES -->
+    <template v-for='(image, index) in main.single.acf.images'>
+      <div  :key='index' 
+            v-if='(index + 1) < main.single.index'
+            :class='"main__cluster--" + (index + 1)'>
         <router-link v-if='image.image !== false' 
-             tag='img'
-             class='main__cluster__image'
-             :to='{name: "lightbox", params: {index: index}}'
-             :src='image.image.sizes["pwr-small"]' />
-    </div>
+          tag='img'
+          class='main__cluster__image'
+          :to='{name: "lightbox", params: {index: index}}'
+          :src='image.image.sizes["pwr-small"]' />
+      </div>
+      <!-- Jump title -->
+      <div  :key='index' 
+            v-else
+            :class='"main__cluster--" + (index + 2)'>
+        <router-link v-if='image.image !== false' 
+          tag='img'
+          class='main__cluster__image'
+          :to='{name: "lightbox", params: {index: index}}'
+          :src='image.image.sizes["pwr-small"]' />
+      </div>
+    </template>
+    <!-- INFO BUTTON -->
     <div v-if='main.single.acf.description'
          class='main__cluster main__cluster--bottom_right'>
       <router-link v-if='$route.name === "single"' :to='{name: "info", params: {slug: main.single.slug}}'>Info</router-link>
@@ -73,6 +89,11 @@ export default {
     blackFeedback() {
       console.log('display a black square')
     }
+  },
+  watch: {
+    // ''(oldV, newV) {
+    //   console.log(oldV, newV)
+    // }
   }
 }
 </script>

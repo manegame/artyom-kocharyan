@@ -68,7 +68,9 @@ export default {
         this.CLEAR_SINGLE_EXHIBITION()
       }
       if (routeName === 'single' || routeName === 'info' || routeName === 'lightbox') {
-        this.GET_SINGLE_EXHIBITION(this.$route.params.slug)
+        this.GET_POSTS().then(() => {
+          this.GET_SINGLE_EXHIBITION(this.$route.params.slug)
+        })
       }
     },
     $_initCustomScrollbars() {
@@ -145,6 +147,7 @@ export default {
   font-family: 'Times New Roman';
   font-size: $font-size;
   line-height: $line-height;
+  letter-spacing: $letter-spacing;
   color: $white;
   background: $white;
   -webkit-font-smoothing: antialiased;
