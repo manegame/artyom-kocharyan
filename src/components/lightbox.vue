@@ -1,18 +1,31 @@
 <template>
   <div class='lightbox main__cluster--lightbox'
       v-if='main.single.acf'>
-    <img class='lightbox__image' 
-        v-if='main.single.acf.images[$route.params.index].image !== false' 
-        :src='main.single.acf.images[$route.params.index].image.sizes["pwr-large"]'>
-    <p class='lightbox__text' v-else>Hey guys, seems to be no pic here. ¯\_(ツ)_/¯</p>
+    <tiny-slider  :mouse-drag="true" 
+                  :loop="false"
+                  :autoplay="true"
+                  :autoplayTimeout="3000" 
+                  gutter="20">
+      <div v-for='(image, index) in main.single.acf.images'
+           :key='index'>
+        <img class='lightbox__image' 
+            v-if='image.image !== false' 
+            :src='image.image.sizes["pwr-large"]'>
+        <p class='lightbox__text' v-else>Hey guys, seems to be no pic here. ¯\_(ツ)_/¯</p>
+      </div>
+    </tiny-slider>
   </div>
 </template>
 
 <script>
 import {mapState} from 'vuex'
+import VueTinySlider from 'vue-tiny-slider'
 
 export default {
   name: 'lightbox',
+  components: {
+    'tiny-slider': VueTinySlider
+  },
   computed: {
     ...mapState(['main'])
   },
@@ -26,6 +39,7 @@ export default {
 @import '../style/helpers/_mixins.scss';
 @import '../style/helpers/_responsive.scss';
 @import '../style/_variables.scss';
+@import '../style/vendor/tiny-slider.css';
 
 .lightbox {
   background: $white;

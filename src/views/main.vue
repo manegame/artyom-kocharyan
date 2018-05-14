@@ -55,16 +55,9 @@ export default {
   background-position: center 1000px;
   border: 20px solid $white;
 
-  /*
-  transition: background-position 0.2s ease-out;
-  -moz-transition: background-position 0.2s ease-out;
-  -webkit-transition: background-position 0.2s ease-out;
-  */
-
   &:hover {
     background-position: center center;
     color: $white;
-    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
   }
 
   &:active {
