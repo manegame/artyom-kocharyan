@@ -10,8 +10,9 @@
           :class='"main__cluster--" + (post.index)'>
           <a  class='main__link__title'
               @click.prevent 
-              :style='{ backgroundImage: "url(" + post.acf.images[0].image.sizes["medium"] + ")" }'>
-              <span v-html='post.title.rendered' />
+              :style='{ backgroundImage: "url(" + post.acf.images[Math.floor(Math.random() * post.acf.images.length)].image.sizes["medium"] + ")" }'>
+              <span class='main__link__title__inner'
+                    v-html='post.title.rendered' />
           </a>
     </router-link>
     <loading v-else/>
@@ -51,10 +52,23 @@ export default {
   height: 100%;
   background-size: contain;
   background-repeat: no-repeat;
-  background-position: 1000px 1000px;
+  background-position: center 1000px;
+  border: 20px solid $white;
+
+  /*
+  transition: background-position 0.2s ease-out;
+  -moz-transition: background-position 0.2s ease-out;
+  -webkit-transition: background-position 0.2s ease-out;
+  */
 
   &:hover {
     background-position: center center;
+    color: $white;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+  }
+
+  &:active {
+    background-position: 1000px 0;
   }
 }
 </style>
