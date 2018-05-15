@@ -3,7 +3,7 @@
     <embed class="svg__embed"
            :class='{"svg__embed--show": show}'
            type="image/svg+xml"
-           :src='svgImage'
+           :src='svg'
            ref='embed'
            @load='initPanZoom'/>
     <div class="svg__loading"
@@ -13,13 +13,17 @@
 </template>
 
 <script>
-import {mapState, mapActions} from 'vuex'
-import venus from '../assets/svg/venus-spiral.svg'
-import annunciationHead from '../assets/svg/annunciation-head.svg'
+import {mapState} from 'vuex'
 import svgPanZoom from 'svg-pan-zoom'
 
 export default {
-  name: 'svg',
+  name: 'svgView',
+  props: {
+    svg: {
+      type: String,
+      required: true
+    }
+  },
   data() {
     return {
       show: false,
@@ -27,11 +31,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['main']),
-    svgImage() {
-      if (this.$route.params.component === 'venus') return venus
-      if (this.$route.params.component === 'annunciationHead') return annunciationHead
-    }
+    ...mapState(['main'])
   },
   methods: {
     initPanZoom() {
@@ -62,7 +62,11 @@ export default {
 @import '../style/_variables.scss';
 
 .svg {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
   background: $white;
+  z-index: 99;
 
   &__embed {
     width: 100%;

@@ -9,8 +9,12 @@
          :class='"main__cluster--" + main.single.index'>
       <p v-html='main.single.title.rendered' />
     </div>
+    <!-- SVG -->
+    <svgView  v-if='hasSvg'
+              :svg='svgSources[0]'/>
     <!-- IMAGES -->
-    <template v-for='(image, index) in main.single.acf.images'>
+    <template v-else
+              v-for='(image, index) in main.single.acf.images'>
       <div  :key='index' 
             v-if='(index + 1) < main.single.index'
             :class='"main__cluster--" + (index + 1)'>
@@ -69,15 +73,26 @@
 import {mapState} from 'vuex'
 import headbar from '../components/headbar'
 import lightbox from '../components/lightbox'
+import svgView from '../components/ak-svg'
 
 export default {
   name: 'single',
   components: {
     headbar,
-    lightbox
+    lightbox,
+    svgView
   },
   computed: {
     ...mapState(['main']),
+    hasSvg() {
+      if (this.svgSources !== null) return true
+      else return false
+    },
+    svgSources() {
+      let svgArray = this.main.single.acf.images.filter(image => { return image.svg })
+      if (svgArray.length) return svgArray.map(item => { return item.svg.url })
+      else return null
+    },
     nextIndex() {
       if (this.$route.name === 'lightbox') {
         // console.log(this.main.single.acf.images.length)
