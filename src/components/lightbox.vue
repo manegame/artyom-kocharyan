@@ -1,17 +1,19 @@
 <template>
   <div class='lightbox main__cluster--lightbox'
-      v-if='main.single.acf'>
-    <tiny-slider  :mouse-drag="true" 
-                  :loop="false"
-                  :autoplay="true"
-                  :autoplayTimeout="3000" 
-                  gutter="20">
-      <div v-for='(image, index) in main.single.acf.images'
-           :key='index'>
-        <img class='lightbox__image' 
-            v-if='image.image !== false' 
-            :src='image.image.sizes["pwr-large"]'>
-        <p class='lightbox__text' v-else>Hey guys, seems to be no pic here. ¯\_(ツ)_/¯</p>
+      v-if='main.single.acf'
+      @click='$emit("navigate", $event)'>
+    <tiny-slider  ref='tinySlider'
+                  :mouse-drag="false"
+                  :controls='false'
+                  :loop="main.single.acf.slideshow === 'autoplay'"
+                  :autoplay="main.single.acf.slideshow === 'autoplay'"
+                  :autoplayTimeout="3000"
+                  gutter="0">
+      <div  class='lightbox__slide'
+            v-for='(image, index) in main.single.acf.images'
+            :key='index'>
+        <img  class='lightbox__slide__image'
+              :src='image.image.sizes["pwr-large"]'>
       </div>
     </tiny-slider>
   </div>
@@ -29,8 +31,11 @@ export default {
   computed: {
     ...mapState(['main'])
   },
-  data() {
-    return {}
+  mounted() {
+    this.$refs.tinySlider.slider.goTo(this.$route.params.index)
+  },
+  beforeUpdate() {
+    this.$refs.tinySlider.slider.goTo(this.$route.params.index)
   }
 }
 </script>
@@ -50,15 +55,21 @@ export default {
     z-index: 11;
   }
 
-  &__image {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-  }
-
   &__text {
     text-align: center;
     vertical-align: center;
+  }
+
+  &__slide {
+    height: 100%;
+    background: $white;
+    padding: $line-height;
+
+    &__image {
+      width: calc(100% - #{$line-height});
+      height: 100%;
+      object-fit: contain;
+    }
   }
 }
 </style>

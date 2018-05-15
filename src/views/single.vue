@@ -49,7 +49,7 @@
     <!-- SLIDESHOW OVERLAY -->
     <template v-if='$route.name === "lightbox"'>
       <!-- LIGHTBOX -->
-      <lightbox />
+      <lightbox @navigate='handleNav'/>
       <!-- CONTROLS -->
       <div class='main__cluster main__cluster--top_left'>
         <router-link :to='{name: "single", params: {slug: main.single.slug}}'>Close</router-link>
@@ -63,7 +63,7 @@
         </div>
       </template>
       <template v-else>
-        <!--  -->
+        arrows
       </template>
     </template>
   </div>
@@ -77,6 +77,11 @@ import svgView from '../components/ak-svg'
 
 export default {
   name: 'single',
+  data () {
+    return {
+      small: null
+    }
+  },
   components: {
     headbar,
     lightbox,
@@ -95,28 +100,46 @@ export default {
     },
     nextIndex() {
       if (this.$route.name === 'lightbox') {
-        // console.log(this.main.single.acf.images.length)
-        return this.$route.params.index + 1
+        let max = this.main.single.acf.images.length - 1 // base 0
+        let next = Number(this.$route.params.index + 1)
+        console.log(next, max)
+        if (next <= max) return next
+        else return max
       }
     },
     prevIndex() {
       if (this.$route.name === 'lightbox') {
-        return this.$route.params.index - 1
+        let min = 0
+        let prev = Number(this.$route.params.index - 1)
+        if (prev >= min) return prev
+        else return 0
       }
-    },
-    small() {
-      if (window.innerWidth < 900) return true
     }
   },
   methods: {
-    blackFeedback() {
-      console.log('display a black square')
+    handleNav(event) {
+      console.log('called')
+      if (event.clientX < window.innerWidth / 2) {
+        this.$router.push({
+          name: 'lightbox', params: { index: this.prevIndex }
+        })
+      } else {
+        this.$router.push({
+          name: 'lightbox', params: { index: this.nextIndex }
+        })
+      }
+    },
+    checkWindow() {
+      if (window.innerWidth < 900) this.small = true
+      else this.small = false
     }
   },
-  watch: {
-    // ''(oldV, newV) {
-    //   console.log(oldV, newV)
-    // }
+  mounted() {
+    this.checkWindow()
+    window.addEventListener('resize', this.checkWindow)
+  },
+  destroyed() {
+    window.removeEventListener('resize', this.checkWindow)
   }
 }
 </script>
