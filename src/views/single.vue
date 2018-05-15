@@ -45,27 +45,9 @@
     <div class="single__info"
           :class='{"single__info--active": $route.name === "info"}'
           v-html='main.single.acf.description'>
-    </div>
-    <!-- SLIDESHOW OVERLAY -->
-    <template v-if='$route.name === "lightbox"'>
-      <!-- LIGHTBOX -->
-      <lightbox @navigate='handleNav'/>
-      <!-- CONTROLS -->
-      <div class='main__cluster main__cluster--top_left'>
-        <router-link :to='{name: "single", params: {slug: main.single.slug}}'>Close</router-link>
-      </div>
-      <template v-if='main.single.acf.slideshow === "user" && small'>
-        <div class='main__cluster main__cluster--bottom_left'>
-          <router-link v-if='$route.params.index > 0' :to='{name: "lightbox", params: {index: prevIndex}}'>Previous</router-link>
-        </div>
-        <div class='main__cluster main__cluster--bottom_right'>
-          <router-link v-if='$route.params.index < main.single.acf.images.length - 1' :to='{name: "lightbox", params: {index: nextIndex}}'>Next</router-link>
-        </div>
-      </template>
-      <template v-else>
-        arrows
-      </template>
-    </template>
+    </div>    
+    <!-- LIGHTBOX -->
+    <lightbox v-if='$route.name === "lightbox"' />
   </div>
 </template>
 
@@ -77,11 +59,6 @@ import svgView from '../components/ak-svg'
 
 export default {
   name: 'single',
-  data () {
-    return {
-      small: null
-    }
-  },
   components: {
     headbar,
     lightbox,
@@ -97,49 +74,7 @@ export default {
       let svgArray = this.main.single.acf.images.filter(image => { return image.svg })
       if (svgArray.length) return svgArray.map(item => { return item.svg.url })
       else return null
-    },
-    nextIndex() {
-      if (this.$route.name === 'lightbox') {
-        let max = this.main.single.acf.images.length - 1 // base 0
-        let next = Number(this.$route.params.index + 1)
-        console.log(next, max)
-        if (next <= max) return next
-        else return max
-      }
-    },
-    prevIndex() {
-      if (this.$route.name === 'lightbox') {
-        let min = 0
-        let prev = Number(this.$route.params.index - 1)
-        if (prev >= min) return prev
-        else return 0
-      }
     }
-  },
-  methods: {
-    handleNav(event) {
-      console.log('called')
-      if (event.clientX < window.innerWidth / 2) {
-        this.$router.push({
-          name: 'lightbox', params: { index: this.prevIndex }
-        })
-      } else {
-        this.$router.push({
-          name: 'lightbox', params: { index: this.nextIndex }
-        })
-      }
-    },
-    checkWindow() {
-      if (window.innerWidth < 900) this.small = true
-      else this.small = false
-    }
-  },
-  mounted() {
-    this.checkWindow()
-    window.addEventListener('resize', this.checkWindow)
-  },
-  destroyed() {
-    window.removeEventListener('resize', this.checkWindow)
   }
 }
 </script>

@@ -59,9 +59,5 @@ export default {
     background-position: center center;
     color: $white;
   }
-
-  &:active {
-    background-position: 1000px 0;
-  }
 }
 </style>
